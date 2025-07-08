@@ -73,7 +73,6 @@ public class Application {
 
         VendorsDAO vd = new VendorsDAO(em);
         UsersDAO ud = new UsersDAO(em);
-        CardsDAO cd = new CardsDAO(em);
 
         HumanVendor hv1 = new HumanVendor("Tabaccheria Christian", LocalTime.of(9, 30), LocalTime.of(20,0));
         HumanVendor hv2 = new HumanVendor("Tabaccheria New Cart", LocalTime.of(7, 30), LocalTime.of(17,0));
@@ -105,20 +104,13 @@ public class Application {
 
 
         CardsDAO cd = new CardsDAO(em);//vendors
-        HumanVendor hv1 = new HumanVendor("Tabaccheria Christian", LocalTime.of(9, 30), LocalTime.of(20, 0));
-        HumanVendor hv2 = new HumanVendor("Tabaccheria New Cart", LocalTime.of(7, 30), LocalTime.of(17, 0));
-        MachineVendor hv3 = new MachineVendor("Macchinetta Via Dei Volsci", true);
-        MachineVendor mv1 = new MachineVendor("Macchinetta Viale Le Corbusier", true);
-        MachineVendor mv2 = new MachineVendor("Macchinetta Via Tiziano", false);
-
-
 
         // recuper0 utenti dal DB
-        User user1 = ud.findById(1L);
-        User user2 = ud.findById(2L);
-        User user3 = ud.findById(3L);
-        User user4 = ud.findById(4L);
-        User user5 = ud.findById(5L);
+        User user1DB = ud.findById(1L);
+        User user2DB = ud.findById(2L);
+        User user3DB = ud.findById(3L);
+        User user4DB = ud.findById(4L);
+        User user5DB = ud.findById(5L);
 
         // recupero vendors dal DB
         Vendor vendor1 = vd.findById(1L);
