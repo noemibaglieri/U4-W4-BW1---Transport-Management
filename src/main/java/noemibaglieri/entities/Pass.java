@@ -80,4 +80,7 @@ public class Pass {
     public void setCard(Card card) {
         this.card = card;
     }
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
 }

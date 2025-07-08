@@ -5,6 +5,7 @@ import noemibaglieri.entities.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import noemibaglieri.enums.PassType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -103,7 +104,7 @@ public class Application {
         ud.save(user5);
 
 
-        CardsDAO cd = new CardsDAO(em);//vendors
+        CardsDAO cd = new CardsDAO(em);
 
         // recuper0 utenti dal DB
         User user1DB = ud.findById(1L);
@@ -131,6 +132,39 @@ public class Application {
         cd.save(card3);
         cd.save(card4);
         cd.save(card5);
+
+        PassDAO pd = new PassDAO(em);
+
+        // Recupero card  dal DB
+        Card c1 = cd.findById(1L);
+        Card c2 = cd.findById(2L);
+        Card c3 = cd.findById(3L);
+        Card c4 = cd.findById(4L);
+        Card c5 = cd.findById(5L);
+
+       //creo i pass
+        LocalDate today = LocalDate.now();
+
+        Pass pass1 = new Pass(c1, today, PassType.MONTHLY);
+        pass1.setVendor(vendor1);
+
+        Pass pass2 = new Pass(c2, today.minusDays(10), PassType.WEEKLY);
+        pass2.setVendor(vendor2);
+
+        Pass pass3 = new Pass(c3, today.minusDays(5), PassType.MONTHLY);
+        pass3.setVendor(vendor3);
+
+        Pass pass4 = new Pass(c4, today, PassType.WEEKLY);
+        pass4.setVendor(vendor4);
+
+        Pass pass5 = new Pass(c5, today.minusDays(20), PassType.MONTHLY);
+        pass5.setVendor(vendor5);
+
+        pd.save(pass1);
+        pd.save(pass2);
+        pd.save(pass3);
+        pd.save(pass4);
+        pd.save(pass5);
 
         em.close();
         emf.close();
