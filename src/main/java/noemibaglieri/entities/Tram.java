@@ -19,7 +19,7 @@ public class Tram extends Vehicle {
     @Override
     public String toString() {
         return "Vehicle{" +
-                "vehicleId=" + vehicleId +
+                "vehicleIdTram=" + vehicleId +
                 ", size=" + size +
                 ", isActive=" + isActive +
 

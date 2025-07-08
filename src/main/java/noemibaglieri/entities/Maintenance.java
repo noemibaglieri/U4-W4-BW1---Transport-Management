@@ -84,7 +84,7 @@ public class Maintenance {
     public String toString() {
         return "Maintenance{" +
                 "maintenanceId=" + maintenanceId +
-                ", vehicle=" + vehicle +
+                ", vehicle=" + vehicle.getClass().getSimpleName() +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", maintenanceCause='" + maintenanceCause + '\'' +

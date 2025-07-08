@@ -21,7 +21,7 @@ public class Bus extends Vehicle {
     @Override
     public String toString() {
         return "Vehicle{" +
-                "vehicleId=" + vehicleId +
+                "vehicleIdBus=" + vehicleId +
                 ", size=" + size +
                 ", isActive=" + isActive +
 
