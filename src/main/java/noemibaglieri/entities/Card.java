@@ -25,16 +25,17 @@ public class Card {
     private User user;
 
     @OneToMany(mappedBy = "card")
-     private List<Pass> passes;
+    private List<Pass> passes;
 
     public Card () {}
 
 
-    public Card(LocalDate issueDate,  User user) {
+    public Card(LocalDate issueDate, User user) {
         this.issueDate= issueDate;
         this.expiryDate = issueDate.plusYears(1);
         this.user = user;
         this.isActive = !issueDate.isAfter(this.expiryDate);
+
     }
 
     public Long getId() {
