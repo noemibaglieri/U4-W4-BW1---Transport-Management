@@ -15,6 +15,7 @@ public class Pass {
     @Column (name = "pass_id")
     private Long passId;
     @Column(name= "pass_type")
+    @Enumerated(EnumType.STRING)
     private PassType passType;
     @Column(name = "start_date")
     private LocalDate startDate;
@@ -32,10 +33,15 @@ public class Pass {
 
     public Pass () {}
 
-    public Pass(Card card, LocalDate endDate, LocalDate startDate) {
+    public Pass(Card card,LocalDate startDate, PassType passType) {
         this.card = card;
-        this.endDate = endDate;
         this.startDate = startDate;
+        this.passType = passType;
+        if (passType == PassType.MONTHLY)  {
+            this.endDate = startDate.plusDays(30);}
+        else  {
+            this.endDate = startDate.plusDays(7);
+        }
     }
 
 
