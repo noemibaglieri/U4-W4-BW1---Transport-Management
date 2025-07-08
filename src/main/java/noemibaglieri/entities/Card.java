@@ -32,9 +32,9 @@ public class Card {
 
     public Card(LocalDate issueDate,  User user) {
         this.issueDate= issueDate;
-        this.expiryDate = expiryDate;
-        this.isActive = isActive;
-        this.user = user ;
+        this.expiryDate = issueDate.plusYears(1);
+        this.user = user;
+        this.isActive = !issueDate.isAfter(this.expiryDate);
     }
 
     public Long getId() {
