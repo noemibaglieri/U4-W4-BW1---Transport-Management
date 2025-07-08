@@ -30,9 +30,9 @@ public class Card {
     public Card () {}
 
 
-    public Card(LocalDate issueDate, LocalDate expiryDate, boolean isActive, User user) {
+    public Card(LocalDate issueDate, boolean isActive, User user) {
         this.issueDate= issueDate;
-        this.expiryDate = expiryDate;
+        this.expiryDate = issueDate.plusYears(1);
         this.isActive = isActive;
         this.user = user ;
     }

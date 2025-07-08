@@ -1,47 +1,51 @@
 package noemibaglieri;
 
-import noemibaglieri.entities.Maintenance;
+import noemibaglieri.dao.*;
+import noemibaglieri.entities.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import noemibaglieri.dao.MaintenanceDAO;
-import noemibaglieri.dao.VehicleDAO;
-import noemibaglieri.entities.Bus;
-import noemibaglieri.entities.Vehicle;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("U4W4BW1");
 
     public static void main(String[] args) {
         EntityManager em = emf.createEntityManager(); // <-- crei EntityManager
-        VehicleDAO vehicleDAO = new VehicleDAO(em);
-        MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
+        VendorsDAO vd = new VendorsDAO(em);
+        UsersDAO ud = new UsersDAO(em);
+        CardsDAO cd = new CardsDAO(em);
 
-        // Crea un nuovo Bus
-        Bus bus = new Bus(40, true);
+        HumanVendor hv1 = new HumanVendor("Tabaccheria Christian", LocalTime.of(9, 30), LocalTime.of(20,0));
+        HumanVendor hv2 = new HumanVendor("Tabaccheria New Cart", LocalTime.of(7, 30), LocalTime.of(17,0));
+        MachineVendor hv3 = new MachineVendor("Macchinetta Via Dei Volsci", true);
+        MachineVendor mv1 = new MachineVendor("Macchinetta Viale Le Corbusier", true);
+        MachineVendor mv2 = new MachineVendor("Macchinetta Via Tiziano", false);
 
-        // Salva il veicolo nel database
-        vehicleDAO.save(bus);
+        // Salva il vendor nel database
+        /*
+        vd.save(hv1);
+        vd.save(hv2);
+        vd.save(hv3);
+        vd.save(mv1);
+        vd.save(mv2);
+         */
 
-        // Recupera il veicolo dal database usando il suo ID
-        Vehicle foundVehicle = vehicleDAO.find(bus.getVehicleId());
-        System.out.println("Veicolo trovato: " + foundVehicle);
+        User user1 = new User("Daenerys", "Targaryen", LocalDate.of(1995,1,14));
+        User user2 = new User("Cersei", "Lannister", LocalDate.of(1978, 9, 11));
+        User user3 = new User("Obara", "Martell", LocalDate.of(2001, 3, 17));
+        User user4 = new User("Olenna", "Tyrell", LocalDate.of(1940, 12, 31));
+        User user5 = new User("Arya", "Stark", LocalDate.of(2004, 12, 11));
 
-        Maintenance manut = new Maintenance(
-                bus,                            // veicolo collegato
-                LocalDate.now(),                // startDate
-                LocalDate.now().plusDays(3),    // endDate
-                "Controllo freni"               // causa
-        );
-        maintenanceDAO.save(manut);
-        System.out.println("Maintenance salvata con ID: " + manut.getMaintenanceId());
-
-
-
-        Maintenance foundMaint = maintenanceDAO.find(manut.getMaintenanceId());
-        System.out.println("Maintenance trovata: " + foundMaint);
+        /*
+        ud.save(user1);
+        ud.save(user2);
+        ud.save(user3);
+        ud.save(user4);
+        ud.save(user5);
+         */
 
         em.close();
         emf.close();
