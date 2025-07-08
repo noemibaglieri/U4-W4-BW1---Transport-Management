@@ -14,9 +14,6 @@ public class Card {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column (name = "card_id")
     private Long cardId;
-
-    @Column(nullable = false)
-    private String codice;
     @Column(name = "issue_date")
     private LocalDate issueDate;
     @Column(name = "expiry_date")
@@ -30,27 +27,18 @@ public class Card {
     @OneToMany(mappedBy = "card")
      private List<Pass> passes;
 
-    public  Card () {}
+    public Card () {}
 
 
-    public Card(String codice, LocalDate issueDate, LocalDate expiryDate, boolean isActive, User user) {
-        this.codice = codice;
+    public Card(LocalDate issueDate, LocalDate expiryDate, boolean isActive, User user) {
         this.issueDate= issueDate;
         this.expiryDate = expiryDate;
         this.isActive = isActive;
         this.user = user ;
     }
 
-    //to do metodo per verificare la validità
-    //to do metodo per rinnovare la tessera
-
-
     public Long getId() {
         return cardId;
-    }
-
-    public String getCodice() {
-        return codice;
     }
 
     public LocalDate getIssueDate() {
@@ -89,7 +77,6 @@ public class Card {
     public String toString() {
         return "Card{" +
                 "cardId=" + cardId +
-                ", codice='" + codice + '\'' +
                 ", issueDate=" + issueDate +
                 ", expiryDate=" + expiryDate +
                 ", isActive=" + isActive +

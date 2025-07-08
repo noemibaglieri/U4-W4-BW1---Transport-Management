@@ -13,8 +13,6 @@ import java.time.LocalTime;
 
 public class HumanVendor extends Vendor{
 
-    @Column(name= "shop_name")
-    private String shopName;
     @Column(name="opening_time")
     private LocalTime openingTime;
     @Column(name="closing_time")
@@ -22,19 +20,10 @@ public class HumanVendor extends Vendor{
 
     public HumanVendor() {}
 
-
-    public HumanVendor(String shopName, LocalTime openingTime, LocalTime closingTime) {
-        this.shopName = shopName;
+    public HumanVendor(String name, LocalTime openingTime, LocalTime closingTime) {
+        super(name);
         this.openingTime = openingTime;
         this.closingTime = closingTime;
-    }
-
-    public String getShopName() {
-        return shopName;
-    }
-
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
     }
 
     public LocalTime getOpeningTime() {
@@ -56,7 +45,7 @@ public class HumanVendor extends Vendor{
     @Override
     public String toString() {
         return "HumanVendor{" +
-                "shopName='" + shopName + '\'' +
+                "shopName='" + name + '\'' +
                 ", openingTime=" + openingTime +
                 ", closingTime=" + closingTime +
                 "vendorId=" + vendorId +

@@ -15,6 +15,7 @@ public abstract class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="vendor_id")
     protected Long vendorId;
+    protected String name;
 
     @OneToMany(mappedBy = "vendor")
     private List<Ticket> ticketList;
@@ -23,8 +24,16 @@ public abstract class Vendor {
 
     public Vendor() {}
 
+    public Vendor(String name) {
+        this.name = name;
+    }
+
     public Long getVendorId() {
         return vendorId;
+    }
+
+    public String getVendorName() {
+        return name;
     }
 
     @Override

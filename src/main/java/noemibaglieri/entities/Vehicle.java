@@ -14,17 +14,16 @@ public abstract class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "vehicle_id")
     protected Long vehicleId;
+    protected String name;
 
-
-    protected String type;
     protected int size;
     @Column(name = "is_active")
     protected boolean isActive;
 
     public Vehicle() {}
 
-    public Vehicle( String type, int size, boolean isActive) {
-        this.type = type;
+    public Vehicle(String name, int size, boolean isActive) {
+        this.name = name;
         this.size = size;
         this.isActive = isActive;
     }
@@ -41,14 +40,6 @@ public abstract class Vehicle {
 
     public Long getVehicleId() {
         return vehicleId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public int getSize() {
@@ -71,7 +62,6 @@ public abstract class Vehicle {
     public String toString() {
         return "Vehicle{" +
                 "vehicleId=" + vehicleId +
-                ", type='" + type + '\'' +
                 ", size=" + size +
                 ", isActive=" + isActive +
                 '}';

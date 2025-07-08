@@ -15,7 +15,8 @@ public class MachineVendor extends Vendor {
     public MachineVendor() {
     }
 
-    public MachineVendor(boolean isActive) {
+    public MachineVendor(String name, boolean isActive) {
+        super(name);
         this.isActive = isActive;
     }
 
@@ -31,6 +32,7 @@ public class MachineVendor extends Vendor {
 
     public String toString() {
         return "MachineVendor{" +
+                "shopName=" + name +
                 "isActive=" + isActive +
                 "vendorId=" + vendorId +
                 '}';

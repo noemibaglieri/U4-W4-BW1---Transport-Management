@@ -11,8 +11,8 @@ public class Bus extends Vehicle {
 
     public Bus(){}
 
-    public Bus( int size, boolean isActive) {
-        super( "bus", size, isActive);
+    public Bus(String name, int size, boolean isActive) {
+        super(name, size, isActive);
 
     }
 
@@ -22,7 +22,6 @@ public class Bus extends Vehicle {
     public String toString() {
         return "Vehicle{" +
                 "vehicleId=" + vehicleId +
-                ", type='" + type + '\'' +
                 ", size=" + size +
                 ", isActive=" + isActive +
 
