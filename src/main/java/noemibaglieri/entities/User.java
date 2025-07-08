@@ -20,7 +20,6 @@ public class User {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-
     @OneToOne
     @JoinColumn(name = "card_id")
     private Card card;
@@ -31,8 +30,8 @@ public class User {
     }
 
     //costruttore
-    public User( String name, String surname, LocalDate dateOfBirth) {
-
+    public User(String name, String surname, LocalDate dateOfBirth) {
+        this.userId = userId;
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
