@@ -35,7 +35,7 @@ public class Card {
         this.expiryDate = issueDate.plusYears(1);
         this.user = user;
         this.isActive = !issueDate.isAfter(this.expiryDate);
-        
+
     }
 
     public Long getId() {
