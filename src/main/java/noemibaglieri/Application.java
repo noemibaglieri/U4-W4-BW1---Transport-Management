@@ -7,6 +7,7 @@ import jakarta.persistence.Persistence;
 import noemibaglieri.dao.MaintenanceDAO;
 import noemibaglieri.dao.VehicleDAO;
 import noemibaglieri.entities.Bus;
+import noemibaglieri.entities.Tram;
 import noemibaglieri.entities.Vehicle;
 
 import java.time.LocalDate;
@@ -26,8 +27,22 @@ public class Application {
         Bus bus3 = new Bus("AB203",40, true);
         Bus bus4 = new Bus("AB204",40, true);
         Bus bus5 = new Bus("AB205",40, true);
+
+        Tram tram1 = new Tram("TR300", 100, true);
+        Tram tram2 = new Tram("TR301", 90, true);
+        Tram tram3 = new Tram("TR302", 120, false);
+        Tram tram4 = new Tram("TR303", 110, true);
+        Tram tram5 = new Tram("TR304", 100, true);
+
+// Salva il veicolo nel database
+        vehicleDAO.save(tram1);
+        vehicleDAO.save(tram2);
+        vehicleDAO.save(tram3);
+        vehicleDAO.save(tram4);
+        vehicleDAO.save(tram5);
+
         // Salva il veicolo nel database
-        vehicleDAO.save(bus1);
+       /* vehicleDAO.save(bus1);
         vehicleDAO.save(bus2);
         vehicleDAO.save(bus3);
         vehicleDAO.save(bus4);
@@ -54,7 +69,7 @@ public class Application {
             Maintenance foundMaint = maintenanceDAO.find(manut.getMaintenanceId());
             System.out.println("Maintenance trovata: " + foundMaint);
         }
-
+*/
         em.close();
         emf.close();
     }
