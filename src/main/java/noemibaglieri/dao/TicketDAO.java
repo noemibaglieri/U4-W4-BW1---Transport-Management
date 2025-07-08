@@ -14,12 +14,19 @@ public class TicketDAO {
         this.entityManager = entityManager;
     }
 
+
+    //prima di salvare i biglietti nel db devo avere un vendor e un vehicle salvati
     public void save(Ticket ticket) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         entityManager.persist(ticket);
         transaction.commit();
     }
+
+    public Ticket findTicketById(Long id) {
+        return entityManager.find(Ticket.class, id);
+    }
+
 }
 
 

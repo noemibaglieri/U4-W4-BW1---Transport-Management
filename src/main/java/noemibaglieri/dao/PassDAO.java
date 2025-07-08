@@ -12,7 +12,7 @@ public class PassDAO {
         this.entityManager = entityManager;
     }
 
-    //prima di salvare i biglietti nel db devo avere un vendor e un vehicle salvati
+
     public void save(Pass pass) {
         EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
@@ -20,7 +20,7 @@ public class PassDAO {
         transaction.commit();
     }
 
-    public Pass findById(Long id) {
+    public Pass findPassById(Long id) {
         return entityManager.find(Pass.class, id);
     }
 }
