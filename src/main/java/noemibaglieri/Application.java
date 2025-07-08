@@ -22,7 +22,6 @@ public class Application {
         // Crea un nuovo Bus
         Bus bus = new Bus("AB200",40, true);
 
-
         // Salva il veicolo nel database
         vehicleDAO.save(bus);
 

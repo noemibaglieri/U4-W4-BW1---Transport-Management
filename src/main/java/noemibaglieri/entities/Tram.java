@@ -11,8 +11,8 @@ public class Tram extends Vehicle {
     public Tram(){}
 
 
-    public Tram( int size, boolean isActive) {
-        super( "tram", size, isActive);
+    public Tram(String name, int size, boolean isActive) {
+        super(name, size, isActive);
 
     }
 
