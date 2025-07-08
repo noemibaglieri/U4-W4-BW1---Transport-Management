@@ -20,7 +20,6 @@ public class Tram extends Vehicle {
     public String toString() {
         return "Vehicle{" +
                 "vehicleId=" + vehicleId +
-                ", type='" + type + '\'' +
                 ", size=" + size +
                 ", isActive=" + isActive +
 

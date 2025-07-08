@@ -20,7 +20,7 @@ public class Application {
         MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
 
         // Crea un nuovo Bus
-        Bus bus = new Bus(40, true);
+        Bus bus = new Bus("AB200",40, true);
 
 
         // Salva il veicolo nel database
