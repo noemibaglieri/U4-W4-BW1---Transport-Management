@@ -41,8 +41,8 @@ public class Application {
         vehicleDAO.save(tram4);
         vehicleDAO.save(tram5);
 
-        // Salva il veicolo nel database
-       /* vehicleDAO.save(bus1);
+
+        vehicleDAO.save(bus1);
         vehicleDAO.save(bus2);
         vehicleDAO.save(bus3);
         vehicleDAO.save(bus4);
@@ -69,7 +69,7 @@ public class Application {
             Maintenance foundMaint = maintenanceDAO.find(manut.getMaintenanceId());
             System.out.println("Maintenance trovata: " + foundMaint);
         }
-*/
+
         em.close();
         emf.close();
     }
