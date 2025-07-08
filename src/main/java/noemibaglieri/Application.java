@@ -20,28 +20,40 @@ public class Application {
         MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
 
         // Crea un nuovo Bus
-        Bus bus = new Bus("AB200",40, true);
 
+        Bus bus1 = new Bus("AB200",40, true);
+        Bus bus2 = new Bus("AB202",40, true);
+        Bus bus3 = new Bus("AB203",40, true);
+        Bus bus4 = new Bus("AB204",40, true);
+        Bus bus5 = new Bus("AB205",40, true);
         // Salva il veicolo nel database
-        vehicleDAO.save(bus);
+        vehicleDAO.save(bus1);
+        vehicleDAO.save(bus2);
+        vehicleDAO.save(bus3);
+        vehicleDAO.save(bus4);
+        vehicleDAO.save(bus5);
+
+        Bus[] buses = {bus1, bus2, bus3, bus4, bus5};
 
         // Recupera il veicolo dal database usando il suo ID
-        Vehicle foundVehicle = vehicleDAO.find(bus.getVehicleId());
-        System.out.println("Veicolo trovato: " + foundVehicle);
+        for (Bus bus : buses) {
+            Vehicle foundVehicle = vehicleDAO.find(bus.getVehicleId());
+            System.out.println("Veicolo trovato: " + foundVehicle);
+        }
 
-        Maintenance manut = new Maintenance(
-                bus,                            // veicolo collegato
-                LocalDate.now(),                // startDate
-                LocalDate.now().plusDays(3),    // endDate
-                "Controllo freni"               // causa
-        );
-        maintenanceDAO.save(manut);
-        System.out.println("Maintenance salvata con ID: " + manut.getMaintenanceId());
+        for (Bus bus : buses) {
+            Maintenance manut = new Maintenance(
+                    bus,
+                    LocalDate.now(),
+                    LocalDate.now().plusDays(3),
+                    "Controllo freni"
+            );
+            maintenanceDAO.save(manut);
+            System.out.println("Maintenance salvata con ID: " + manut.getMaintenanceId());
 
-
-
-        Maintenance foundMaint = maintenanceDAO.find(manut.getMaintenanceId());
-        System.out.println("Maintenance trovata: " + foundMaint);
+            Maintenance foundMaint = maintenanceDAO.find(manut.getMaintenanceId());
+            System.out.println("Maintenance trovata: " + foundMaint);
+        }
 
         em.close();
         emf.close();
