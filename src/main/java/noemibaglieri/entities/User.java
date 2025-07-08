@@ -31,8 +31,8 @@ public class User {
     }
 
     //costruttore
-    public User(Long userId, String name, String surname, LocalDate dateOfBirth) {
-        this.userId = userId;
+    public User( String name, String surname, LocalDate dateOfBirth) {
+
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
