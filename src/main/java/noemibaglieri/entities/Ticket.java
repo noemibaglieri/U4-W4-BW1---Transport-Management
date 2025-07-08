@@ -17,7 +17,7 @@ public class Ticket {
 
      @Column(name="date_of_purchase")
     private LocalDate dateOfPurchase;
-     @Column(name="isValidated")
+     @Column(name="is_validated")
      private boolean isValidated;
 
      @ManyToOne
