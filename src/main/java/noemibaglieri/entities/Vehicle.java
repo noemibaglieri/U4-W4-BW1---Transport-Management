@@ -6,6 +6,8 @@ import java.util.List;
 
 @Entity
 @Table(name="vehicles")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "vehicle_type", discriminatorType = DiscriminatorType.STRING)
 
 public abstract class Vehicle {
     @Id

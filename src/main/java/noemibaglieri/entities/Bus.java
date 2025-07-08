@@ -1,10 +1,11 @@
 package noemibaglieri.entities;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-
+@DiscriminatorValue("bus")
 
 public class Bus extends Vehicle {
 
