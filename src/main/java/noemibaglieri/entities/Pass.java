@@ -21,6 +21,9 @@ public class Pass {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @ManyToOne
+    @JoinColumn(name="vendor_id")
+    private Vendor vendor;
 
      @ManyToOne
     @JoinColumn(name = "card_id")

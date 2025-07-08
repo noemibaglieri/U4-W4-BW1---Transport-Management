@@ -5,6 +5,18 @@
     <persistence-unit name="U4W4BW1">
         <!-- Il persistence unit ci serve per configurare la connessione ad uno specifico db -->
         <class>noemibaglieri.entities.User</class>
+        <class>noemibaglieri.entities.Bus</class>
+        <class>noemibaglieri.entities.Card</class>
+        <class>noemibaglieri.entities.HumanVendor</class>
+        <class>noemibaglieri.entities.MachineVendor</class>
+        <class>noemibaglieri.entities.Maintenance</class>
+        <class>noemibaglieri.entities.Pass</class>
+        <class>noemibaglieri.entities.Route</class>
+        <class>noemibaglieri.entities.Ticket</class>
+        <class>noemibaglieri.entities.Tram</class>
+        <class>noemibaglieri.entities.Vehicle</class>
+        <class>noemibaglieri.entities.VehicleTrip</class>
+        <class>noemibaglieri.entities.Vendor</class>
         <!-- Serve specificare l'elenco delle entities con tanto di package -->
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/U4W4BW1"/>

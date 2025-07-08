@@ -1,6 +1,9 @@
 package noemibaglieri.entities;
 
 import jakarta.persistence.*;
+import jakarta.persistence.metamodel.ListAttribute;
+
+import java.util.List;
 
 @Entity
 @Table(name="vendors")
@@ -12,6 +15,11 @@ public abstract class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="vendor_id")
     protected Long vendorId;
+
+    @OneToMany
+    private List<Ticket> ticketList;
+    @OneToMany
+    private List<Pass> passList;
 
     public Vendor() {}
 

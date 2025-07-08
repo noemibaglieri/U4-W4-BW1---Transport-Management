@@ -3,6 +3,7 @@ package noemibaglieri.entities;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "tickets")
@@ -18,6 +19,14 @@ public class Ticket {
     private LocalDate dateOfPurchase;
      @Column(name="isValidated")
      private boolean isValidated;
+
+     @ManyToOne
+     @JoinColumn(name = "vendor_id")
+     private Vendor vendor;
+
+     @ManyToOne
+     @JoinColumn(name="vehicle_id")
+     private Vehicle vehicle;
 
      public Ticket() {}
 
