@@ -1,8 +1,6 @@
 package noemibaglieri.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -10,36 +8,37 @@ import java.util.List;
 @Table(name="vehicles")
 
 public abstract class Vehicle {
-    protected int vehicleId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vehicle_id")
+    protected Long vehicleId;
+
+
     protected String type;
     protected int size;
+    @Column(name = "is_active")
     protected boolean isActive;
 
     public Vehicle() {}
 
-    public Vehicle(int vehicleId, String type, int size, boolean isActive) {
-        this.vehicleId = vehicleId;
+    public Vehicle( String type, int size, boolean isActive) {
         this.type = type;
         this.size = size;
         this.isActive = isActive;
     }
 
-    @OneToMany
+    @OneToMany(mappedBy = "vehicle")
      private List<VehicleTrip> vehicleTripList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "vehicle")
     private List<Maintenance> maintenanceList;
 
-    @OneToMany
+    @OneToMany(mappedBy = "vehicle")
     private List<Ticket> ticketList;
 
 
-    public int getVehicleId() {
+    public Long getVehicleId() {
         return vehicleId;
-    }
-
-    public void setVehicleId(int vehicleId) {
-        this.vehicleId = vehicleId;
     }
 
     public String getType() {

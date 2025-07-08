@@ -1,48 +1,43 @@
 package noemibaglieri.entities;
 
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
+import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name="trips")
-
 public class VehicleTrip {
-    private int tripId;
-    private Vehicle vehicle;
-    private Route route;
-    private LocalDate date;
-    private int actualDuration;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "trip_id")
+    private Long tripId;
 
     @ManyToOne
     @JoinColumn(name="vehicle_id")
-    private Vehicle vehicles;
+    private Vehicle vehicle;
 
     @ManyToOne
     @JoinColumn(name="route_id")
-    private Route routes;
+    private Route route;
 
-    public VehicleTrip(){}
+    private LocalDate date;
 
-    public VehicleTrip(int tripId, Vehicle vehicle, Route route, LocalDate date, int actualDuration) {
-        this.tripId = tripId;
+    @Column(name="actual_duration")
+    private int actualDuration;
+
+    public VehicleTrip() {}
+
+    public VehicleTrip(Vehicle vehicle, Route route, LocalDate date, int actualDuration) {
         this.vehicle = vehicle;
         this.route = route;
         this.date = date;
         this.actualDuration = actualDuration;
     }
 
-    public int getTripId() {
-        return tripId;
-    }
+    // Getter e setter...
 
-    public void setTripId(int tripId) {
-        this.tripId = tripId;
+    public Long getTripId() {
+        return tripId;
     }
 
     public Vehicle getVehicle() {

@@ -1,8 +1,6 @@
 package noemibaglieri.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.List;
 
@@ -10,30 +8,34 @@ import java.util.List;
 @Table(name="routes")
 
 public class Route {
-    private int routeId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "route_id")
+    private Long routeId;
+   @Column(name="start_area")
     private String startArea;
+    @Column(name="end_area")
     private String endArea;
+    @Column(name="expected_duration")
     private int expectedDuration;
 
-    @OneToMany
+    @OneToMany(mappedBy = "route")
     private List<VehicleTrip> vehicleTripList;
 
     public Route() {}
 
-    public Route(int routeId, String startArea, String endArea, int expectedDuration) {
-        this.routeId = routeId;
+    public Route(String startArea, String endArea, int expectedDuration) {
+
         this.startArea = startArea;
         this.endArea = endArea;
         this.expectedDuration = expectedDuration;
     }
 
-    public int getRouteId() {
+    public Long getRouteId() {
         return routeId;
     }
 
-    public void setRouteId(int routeId) {
-        this.routeId = routeId;
-    }
 
     public String getStartArea() {
         return startArea;

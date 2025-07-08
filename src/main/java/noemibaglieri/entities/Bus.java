@@ -10,8 +10,8 @@ public class Bus extends Vehicle {
 
     public Bus(){}
 
-    public Bus(int vehicleId, int size, boolean isActive) {
-        super(vehicleId, "bus", size, isActive);
+    public Bus( int size, boolean isActive) {
+        super( "bus", size, isActive);
 
     }
 
