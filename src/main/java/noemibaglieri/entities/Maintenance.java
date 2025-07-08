@@ -13,8 +13,6 @@ public class Maintenance {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "maintenance_id")
     protected Long maintenanceId;
-@Column(name="vehicle_type")
-    private Vehicle vehicleType;
     @Column(name="start_date")
     private LocalDate startDate;
     @Column(name="end_date")
@@ -28,20 +26,17 @@ public class Maintenance {
     private Vehicle vehicle;
 
 
-    private Vehicle vehicles;
     public Maintenance(){}
 
-    public Maintenance( Vehicle vehicleType, LocalDate startDate, LocalDate endDate, String maintenanceCause) {
+    public Maintenance(Vehicle vehicle, LocalDate startDate, LocalDate endDate, String maintenanceCause) {
 
-        this.vehicleType = vehicleType;
+        this.vehicle = vehicle;
         this.startDate = startDate;
         this.endDate = endDate;
         this.maintenanceCause = maintenanceCause;
     }
 
-    public Vehicle getVehicles() {
-        return vehicles;
-    }
+
 
     public Vehicle getVehicle() {
         return vehicle;
@@ -59,17 +54,13 @@ public class Maintenance {
         return startDate;
     }
 
-    public Vehicle getVehicleType() {
-        return vehicleType;
-    }
+
 
     public Long getMaintenanceId() {
         return maintenanceId;
     }
 
-    public void setVehicleType(Vehicle vehicleType) {
-        this.vehicleType = vehicleType;
-    }
+
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
@@ -87,9 +78,7 @@ public class Maintenance {
         this.vehicle = vehicle;
     }
 
-    public void setVehicles(Vehicle vehicles) {
-        this.vehicles = vehicles;
-    }
+
 
     @Override
     public String toString() {
@@ -99,7 +88,7 @@ public class Maintenance {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", maintenanceCause='" + maintenanceCause + '\'' +
-                ", vehicles=" + vehicles +
+
                 '}';
     }
 }
