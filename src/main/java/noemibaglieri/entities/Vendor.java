@@ -16,9 +16,9 @@ public abstract class Vendor {
     @Column(name="vendor_id")
     protected Long vendorId;
 
-    @OneToMany
+    @OneToMany(mappedBy = "vendor")
     private List<Ticket> ticketList;
-    @OneToMany
+    @OneToMany(mappedBy = "vendor")
     private List<Pass> passList;
 
     public Vendor() {}

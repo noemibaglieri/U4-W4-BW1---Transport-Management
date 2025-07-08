@@ -27,8 +27,8 @@ public class Card {
     @OneToOne(mappedBy = "card")
     private User user;
 
-@OneToMany
-private List<Pass> passes;
+    @OneToMany(mappedBy = "card")
+     private List<Pass> passes;
 
     public  Card () {}
 
