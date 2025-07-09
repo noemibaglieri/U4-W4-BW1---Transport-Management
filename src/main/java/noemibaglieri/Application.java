@@ -17,10 +17,12 @@ public class Application {
         EntityManager em = emf.createEntityManager(); // <-- crei EntityManager
         VehicleDAO vehicleDAO = new VehicleDAO(em);
         MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
+        TicketDAO ticketDAO = new TicketDAO(em);
 
 
 
-        // Crea un nuovo Bus
+
+        // Creo un nuovo Bus
 
         Bus bus1 = new Bus("AB200",40, true);
         Bus bus2 = new Bus("AB202",40, true);
@@ -34,7 +36,7 @@ public class Application {
         Tram tram4 = new Tram("TR303", 110, true);
         Tram tram5 = new Tram("TR304", 100, true);
 
-// Salva il veicolo nel database
+        // Salvo il veicolo nel database
         vehicleDAO.save(tram1);
         vehicleDAO.save(tram2);
         vehicleDAO.save(tram3);
@@ -42,7 +44,7 @@ public class Application {
         vehicleDAO.save(tram5);
 
 
-       /* vehicleDAO.save(bus1);
+       vehicleDAO.save(bus1);
         vehicleDAO.save(bus2);
         vehicleDAO.save(bus3);
         vehicleDAO.save(bus4);
@@ -68,7 +70,7 @@ public class Application {
 
             Maintenance foundMaint = maintenanceDAO.find(manut.getMaintenanceId());
             System.out.println("Maintenance trovata: " + foundMaint);
-        }*/
+        }
 
 
 
@@ -81,13 +83,13 @@ public class Application {
         MachineVendor mv1 = new MachineVendor("Macchinetta Viale Le Corbusier", true);
         MachineVendor mv2 = new MachineVendor("Macchinetta Via Tiziano", false);
 
-        // Salva il vendor nel database
+        // Salvo il vendor nel database
 
-       /* vd.save(hv1);
+       vd.save(hv1);
         vd.save(hv2);
         vd.save(hv3);
         vd.save(mv1);
-        vd.save(mv2);*/
+        vd.save(mv2);
 
 
         User user1 = new User("Daenerys", "Targaryen", LocalDate.of(1995,1,14));
@@ -97,11 +99,11 @@ public class Application {
         User user5 = new User("Arya", "Stark", LocalDate.of(2004, 12, 11));
 
 
-       /* ud.save(user1);
+      ud.save(user1);
         ud.save(user2);
         ud.save(user3);
         ud.save(user4);
-        ud.save(user5);*/
+        ud.save(user5);
 
 
         CardsDAO cd = new CardsDAO(em);
@@ -127,11 +129,11 @@ public class Application {
         Card card4 = new Card(LocalDate.of(2024, 5, 20), user4);
         Card card5 = new Card(LocalDate.of(2024, 7, 5), user5);
 
-        /*cd.save(card1);
+        cd.save(card1);
         cd.save(card2);
         cd.save(card3);
         cd.save(card4);
-        cd.save(card5);*/
+        cd.save(card5);
 
         PassDAO pd = new PassDAO(em);
 
@@ -160,27 +162,70 @@ public class Application {
         Pass pass5 = new Pass(c5, today.minusDays(20), PassType.MONTHLY);
         pass5.setVendor(vendor5);
 
-       /* pd.save(pass1);
+       pd.save(pass1);
         pd.save(pass2);
         pd.save(pass3);
         pd.save(pass4);
-        pd.save(pass5);*/
+        pd.save(pass5);
 
         RoutesDao rd = new RoutesDao(em);
 
-// Crea delle route realistiche
+// Creo delle route
         Route route1 = new Route("Centro", "Stazione", 35);
         Route route2 = new Route("Stazione", "Aeroporto", 50);
         Route route3 = new Route("Università", "Centro", 25);
         Route route4 = new Route("Ospedale", "Quartiere Nord", 40);
         Route route5 = new Route("Quartiere Sud", "Mercato", 30);
 
-// Salva le route nel DB
-      /*  rd.save(route1);
+
+     rd.save(route1);
         rd.save(route2);
         rd.save(route3);
         rd.save(route4);
-        rd.save(route5);*/
+        rd.save(route5);
+
+        VehicleTripDao td = new VehicleTripDao(em);
+
+        // veicoli salvati dal db
+        Vehicle v1 = vehicleDAO.find(1L);
+        Vehicle v2 = vehicleDAO.find(2L);
+        Vehicle v3 = vehicleDAO.find(3L);
+        Vehicle v4 = vehicleDAO.find(4L);
+        Vehicle v5 = vehicleDAO.find(5L);
+
+        //route salvate dal db
+        Route r1 = rd.findById(1L);
+        Route r2 = rd.findById(2L);
+        Route r3 = rd.findById(3L);
+        Route r4 = rd.findById(4L);
+        Route r5 = rd.findById(5L);
+
+
+        VehicleTrip trip1 = new VehicleTrip(v1, r1, LocalDate.of(2025, 6, 8), 38);
+        VehicleTrip trip2 = new VehicleTrip(v2, r2, LocalDate.of(2025, 5, 9), 52);
+        VehicleTrip trip3 = new VehicleTrip(v3, r3, LocalDate.of(2025, 2, 10), 27);
+        VehicleTrip trip4 = new VehicleTrip(v4, r4, LocalDate.of(2025, 4, 11), 41);
+        VehicleTrip trip5 = new VehicleTrip(v5, r5, LocalDate.of(2025, 6, 12), 29);
+
+
+        td.save(trip1);
+        td.save(trip2);
+        td.save(trip3);
+        td.save(trip4);
+        td.save(trip5);
+
+        Ticket ticket1 = new Ticket(LocalDate.now(), 1.50, vendor1);
+        Ticket ticket2 = new Ticket(LocalDate.now(), 1.50, vendor2);
+        Ticket ticket3 = new Ticket(LocalDate.now(), 1.50, vendor3);
+        Ticket ticket4 = new Ticket(LocalDate.now(), 1.50, vendor2);
+        Ticket ticket5 = new Ticket(LocalDate.now(), 1.50, vendor5);
+
+        ticketDAO.save(ticket1);
+        ticketDAO.save(ticket2);
+        ticketDAO.save(ticket3);
+        ticketDAO.save(ticket4);
+        ticketDAO.save(ticket5);
+
 
         em.close();
         emf.close();

@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @Table(name="vendors")
 @Inheritance(strategy = InheritanceType.JOINED)
-
+@DiscriminatorColumn(name = "vendor_type")
 public abstract class Vendor {
 
     @Id

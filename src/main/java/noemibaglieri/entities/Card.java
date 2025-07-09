@@ -21,7 +21,8 @@ public class Card {
     @Column (name = "is_active")
     private boolean isActive;
 
-    @OneToOne(mappedBy = "card")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "card")
