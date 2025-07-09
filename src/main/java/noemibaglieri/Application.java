@@ -17,6 +17,7 @@ public class Application {
         EntityManager em = emf.createEntityManager(); // <-- crei EntityManager
         VehicleDAO vehicleDAO = new VehicleDAO(em);
         MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
+        TicketDAO ticketDAO = new TicketDAO(em);
 
 
 
@@ -212,6 +213,12 @@ public class Application {
         td.save(trip3);
         td.save(trip4);
         td.save(trip5);
+
+        Ticket ticket1 = new Ticket(LocalDate.now(), 1.50, vendor1);
+        Ticket ticket2 = new Ticket(LocalDate.now(), 1.50, vendor2);
+        Ticket ticket3 = new Ticket(LocalDate.now(), 1.50, vendor3);
+        Ticket ticket4 = new Ticket(LocalDate.now(), 1.50, vendor2);
+        Ticket ticket5 = new Ticket(LocalDate.now(), 1.50, vendor5);
 
 
 

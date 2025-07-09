@@ -30,6 +30,12 @@ public class Ticket {
 
      public Ticket() {}
 
+    public Ticket(LocalDate dateOfPurchase, double price, Vendor vendor) {
+         this.dateOfPurchase = dateOfPurchase;
+         this.price = price;
+         this.vendor = vendor;
+    }
+
     public Long getTicketId() {
         return ticketId;
     }
