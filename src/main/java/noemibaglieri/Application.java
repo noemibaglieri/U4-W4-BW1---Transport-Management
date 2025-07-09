@@ -20,7 +20,8 @@ public class Application {
 
 
 
-        // Crea un nuovo Bus
+
+        // Creo un nuovo Bus
 
         Bus bus1 = new Bus("AB200",40, true);
         Bus bus2 = new Bus("AB202",40, true);
@@ -34,7 +35,7 @@ public class Application {
         Tram tram4 = new Tram("TR303", 110, true);
         Tram tram5 = new Tram("TR304", 100, true);
 
-// Salva il veicolo nel database
+// Salvo il veicolo nel database
         vehicleDAO.save(tram1);
         vehicleDAO.save(tram2);
         vehicleDAO.save(tram3);
@@ -81,7 +82,7 @@ public class Application {
         MachineVendor mv1 = new MachineVendor("Macchinetta Viale Le Corbusier", true);
         MachineVendor mv2 = new MachineVendor("Macchinetta Via Tiziano", false);
 
-        // Salva il vendor nel database
+        // Salvo il vendor nel database
 
        /* vd.save(hv1);
         vd.save(hv2);
@@ -168,19 +169,52 @@ public class Application {
 
         RoutesDao rd = new RoutesDao(em);
 
-// Crea delle route realistiche
+// Creo delle route
         Route route1 = new Route("Centro", "Stazione", 35);
         Route route2 = new Route("Stazione", "Aeroporto", 50);
         Route route3 = new Route("Università", "Centro", 25);
         Route route4 = new Route("Ospedale", "Quartiere Nord", 40);
         Route route5 = new Route("Quartiere Sud", "Mercato", 30);
 
-// Salva le route nel DB
+
       /*  rd.save(route1);
         rd.save(route2);
         rd.save(route3);
         rd.save(route4);
         rd.save(route5);*/
+
+        VehicleTripDao td = new VehicleTripDao(em);
+
+        // veicoli salvati dal db
+        Vehicle v1 = vehicleDAO.find(1L);
+        Vehicle v2 = vehicleDAO.find(2L);
+        Vehicle v3 = vehicleDAO.find(3L);
+        Vehicle v4 = vehicleDAO.find(4L);
+        Vehicle v5 = vehicleDAO.find(5L);
+
+        //route salvate dal db
+        Route r1 = rd.findById(1L);
+        Route r2 = rd.findById(2L);
+        Route r3 = rd.findById(3L);
+        Route r4 = rd.findById(4L);
+        Route r5 = rd.findById(5L);
+
+
+        VehicleTrip trip1 = new VehicleTrip(v1, r1, LocalDate.of(2025, 6, 8), 38);
+        VehicleTrip trip2 = new VehicleTrip(v2, r2, LocalDate.of(2025, 5, 9), 52);
+        VehicleTrip trip3 = new VehicleTrip(v3, r3, LocalDate.of(2025, 2, 10), 27);
+        VehicleTrip trip4 = new VehicleTrip(v4, r4, LocalDate.of(2025, 4, 11), 41);
+        VehicleTrip trip5 = new VehicleTrip(v5, r5, LocalDate.of(2025, 6, 12), 29);
+
+
+        td.save(trip1);
+        td.save(trip2);
+        td.save(trip3);
+        td.save(trip4);
+        td.save(trip5);
+
+
+
 
         em.close();
         emf.close();
