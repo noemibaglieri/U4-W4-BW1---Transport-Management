@@ -2,7 +2,12 @@ package noemibaglieri.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import noemibaglieri.entities.Maintenance;
+import noemibaglieri.entities.Vehicle;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class MaintenanceDAO {
 
@@ -29,4 +34,48 @@ public class MaintenanceDAO {
     public Maintenance find(Long id) {
         return em.find(Maintenance.class, id);
     }
+
+
+    // Restituisce tutte le manutenzioni associate a un veicolo
+    public List<Maintenance> findByVehicle(Vehicle vehicle) {
+        TypedQuery<Maintenance> query = em.createQuery(
+                "SELECT m FROM Maintenance m WHERE m.vehicle = :vehicle ORDER BY m.startDate DESC",
+                Maintenance.class
+        );
+        query.setParameter("vehicle", vehicle);
+        return query.getResultList();
+    }
+
+    // Verifica se un veicolo è attualmente in manutenzione (oggi tra startDate e endDate)
+    public boolean isVehicleInMaintenance(Vehicle vehicle) {
+        TypedQuery<Maintenance> query = em.createQuery(
+                "SELECT m FROM Maintenance m " +
+                        "WHERE m.vehicle = :vehicle AND :today BETWEEN m.startDate AND m.endDate",
+                Maintenance.class
+        );
+        query.setParameter("vehicle", vehicle);
+        query.setParameter("today", LocalDate.now());
+
+        List<Maintenance> results = query.getResultList();
+
+        for (Maintenance m : results) {
+            System.out.println("Veicolo in manutenzione dal " + m.getStartDate() + " al " + m.getEndDate() +
+                    " (causa: " + m.getMaintenanceCause() + ")");
+        }
+
+        return !results.isEmpty();
+    }
+
+
+    // Restituisce tutte le manutenzioni attive in una certa data
+    public List<Maintenance> findActiveMaintenancesOnDate(LocalDate date) {
+        TypedQuery<Maintenance> query = em.createQuery(
+                "SELECT m FROM Maintenance m WHERE :date BETWEEN m.startDate AND m.endDate",
+                Maintenance.class
+        );
+        query.setParameter("date", date);
+        return query.getResultList();
+    }
+
+
 }

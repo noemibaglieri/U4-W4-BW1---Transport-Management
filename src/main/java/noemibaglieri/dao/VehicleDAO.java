@@ -2,6 +2,9 @@ package noemibaglieri.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import noemibaglieri.entities.Bus;
+import noemibaglieri.entities.Ticket;
+import noemibaglieri.entities.Tram;
 import noemibaglieri.entities.Vehicle;
 
 public class VehicleDAO {
@@ -29,5 +32,51 @@ public class VehicleDAO {
     public Vehicle find(Long id) {
         return em.find(Vehicle.class, id);
     }
+
+    public String obliterateTicket(Long ticketId) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            Ticket ticket = em.find(Ticket.class, ticketId);
+            if (ticket == null) {
+                tx.rollback();
+                return "Ticket con ID " + ticketId + " non trovato.";
+            }
+            if (ticket.isValidated()) {
+                tx.rollback();
+                return "Ticket " + ticketId + " è già stato obliterato.";
+            }
+
+            Vehicle vehicle = ticket.getVehicle();
+            if (vehicle == null) {
+                tx.rollback();
+                return "Errore: il ticket non è associato né a un bus né a un tram.";
+            }
+
+            String mezzo;
+            if (vehicle instanceof Bus) {
+                mezzo = "bus";
+            } else if (vehicle instanceof Tram) {
+                mezzo = "tram";
+            } else {
+
+                tx.rollback();
+                return "Errore interno: tipo di veicolo non riconosciuto.";
+            }
+
+            // Obliterazione
+            ticket.setValidated(true);
+            ticket.setVehicle(null);
+
+            em.merge(ticket);
+            tx.commit();
+            return "Ticket " + ticketId + " obliterato su " + mezzo + ".";
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            e.printStackTrace();
+            return "Errore durante l'obliterazione del ticket.";
+        }
+    }
+
 }
 
