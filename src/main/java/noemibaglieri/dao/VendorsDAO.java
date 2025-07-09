@@ -46,18 +46,24 @@ public class VendorsDAO {
 
 //metodo per emettere un ticket
 
-    public void issueTicket(Vendor vendor, double price) {
-
-
-        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-
-        Ticket ticket = new Ticket(LocalDate.now(), price, vendor);
-        entityManager.persist(ticket);
-
-        transaction.commit();
-        System.out.println(" Ticket issued by vendor '" + vendor.getVendorName() + "' with ID: " + ticket.getTicketId() + " and price: €" + price);
+public void issueTicket(Vendor vendor, double price) {
+    if (!isVendorAvailable(vendor)) {
+        System.out.println("Ticket not issued. Vendor '" + vendor.getVendorName() + "' is not available at the moment.");
+        return;
     }
+    
+    EntityTransaction transaction = entityManager.getTransaction();
+    transaction.begin();
+
+    Ticket ticket = new Ticket(LocalDate.now(), price, vendor);
+    entityManager.persist(ticket);
+
+    transaction.commit();
+    System.out.println("Ticket issued by vendor '" + vendor.getVendorName()
+            + "' with ID: " + ticket.getTicketId() + " and price: €" + price);
+}
+
+
 
 
 }
