@@ -1,16 +1,12 @@
 package noemibaglieri.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalTime;
 
 @Entity
 @Table(name= "human_vendors")
-
-
+@DiscriminatorValue("Human")
 public class HumanVendor extends Vendor{
 
     @Column(name="opening_time")

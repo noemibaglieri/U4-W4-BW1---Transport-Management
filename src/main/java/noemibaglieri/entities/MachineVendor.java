@@ -1,12 +1,13 @@
 package noemibaglieri.entities;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="machines_vendors")
-
+@DiscriminatorValue("Machine")
 public class MachineVendor extends Vendor {
 
     @Column(name="is_active")

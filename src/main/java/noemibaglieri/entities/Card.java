@@ -21,11 +21,12 @@ public class Card {
     @Column (name = "is_active")
     private boolean isActive;
 
-    @OneToOne(mappedBy = "card")
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "card")
-     private List<Pass> passes;
+    private List<Pass> passes;
 
     public Card () {}
 

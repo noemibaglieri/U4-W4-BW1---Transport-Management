@@ -11,7 +11,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "user_id")
+    @Column(name = "user_id")
     private Long userId;
 
     private String name;
@@ -20,10 +20,6 @@ public class User {
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
-    @OneToOne
-    @JoinColumn(name = "card_id")
-    private Card card;
-
 
     //costruttore vuoto
     public User() {
@@ -31,7 +27,6 @@ public class User {
 
     //costruttore
     public User(String name, String surname, LocalDate dateOfBirth) {
-        this.userId = userId;
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
@@ -73,7 +68,6 @@ public class User {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
-                ", card=" + card +
                 '}';
     }
 }
