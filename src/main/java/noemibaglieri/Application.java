@@ -9,6 +9,7 @@ import noemibaglieri.enums.PassType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("U4W4BW1");
@@ -58,7 +59,7 @@ public class Application {
             System.out.println("Veicolo trovato: " + foundVehicle);
         }
 
-        for (Bus bus : buses) {
+        for (Bus bus : (buses)) {
             Maintenance manut = new Maintenance(
                     bus,
                     LocalDate.now(),
@@ -71,6 +72,23 @@ public class Application {
             Maintenance foundMaint = maintenanceDAO.find(manut.getMaintenanceId());
             System.out.println("Maintenance trovata: " + foundMaint);
         }
+
+        Maintenance manut2 = new Maintenance(bus1,
+                LocalDate.now(),
+                LocalDate.now().plusDays(3),
+                "Controllo freni"
+        );
+        maintenanceDAO.save(manut2);
+
+        Maintenance manut3 = new Maintenance(bus1,
+                LocalDate.now(),
+                LocalDate.now().plusDays(3),
+                "Controllo freni"
+        );
+        maintenanceDAO.save(manut3);
+
+        maintenanceDAO.save(manut2);
+        maintenanceDAO.save(manut3);
 
 
 
@@ -227,8 +245,58 @@ public class Application {
         ticketDAO.save(ticket5);
 
 
-        cd.isCardValid(4L);
-        pd.isPassValid(3L);
+        ticket1.setVehicle(bus1);
+        ticketDAO.save(ticket1);
+        ticket2.setVehicle(tram1);
+        ticketDAO.save(ticket2);
+
+
+
+        String risultato = vehicleDAO.obliterateTicket(ticket1.getTicketId());
+        System.out.println(risultato);
+
+
+
+        String secondo = vehicleDAO.obliterateTicket(ticket2.getTicketId());
+        System.out.println(secondo);
+
+        String terzo = vehicleDAO.obliterateTicket(ticket2.getTicketId());
+        System.out.println(terzo);
+
+        Bus bus6 = new Bus("AB205",40, true);
+        vehicleDAO.save(bus6);
+        boolean isBus1InMaintenance = maintenanceDAO.isVehicleInMaintenance(bus1);
+        System.out.println("Il bus " + bus1.getVehicleId() + (isBus1InMaintenance ? " è" : " NON è") + " in manutenzione oggi.");
+
+
+        System.out.println("\n Manutenzioni attive oggi:");
+        List<Maintenance> attiveOggi = maintenanceDAO.findActiveMaintenancesOnDate(LocalDate.now());
+
+        if (attiveOggi.isEmpty()) {
+            System.out.println("Nessuna manutenzione attiva.");
+        } else {
+            for (Maintenance m : attiveOggi) {
+                System.out.println("- Veicolo: " + m.getVehicle() +
+                        ", dal " + m.getStartDate() + " al " + m.getEndDate() +
+                        ", causa: " + m.getMaintenanceCause());
+            }
+        }
+
+
+        System.out.println("\n Storico manutenzioni per il bus con id: " + bus1.getVehicleId());
+        List<Maintenance> storicoBus1 = maintenanceDAO.findByVehicle(bus1);
+
+        if (storicoBus1.isEmpty()) {
+            System.out.println("Nessuna manutenzione trovata per questo veicolo.");
+        } else {
+            for (Maintenance m : storicoBus1) {
+                System.out.println("- Dal " + m.getStartDate() + " al " + m.getEndDate() +
+                        " (causa: " + m.getMaintenanceCause() + ")");
+            }
+        }
+
+
+
 
         em.close();
         emf.close();
