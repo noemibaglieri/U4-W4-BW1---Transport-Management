@@ -5,6 +5,7 @@ import noemibaglieri.entities.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import noemibaglieri.enums.PassType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -41,7 +42,7 @@ public class Application {
         vehicleDAO.save(tram5);
 
 
-        vehicleDAO.save(bus1);
+       /* vehicleDAO.save(bus1);
         vehicleDAO.save(bus2);
         vehicleDAO.save(bus3);
         vehicleDAO.save(bus4);
@@ -67,7 +68,7 @@ public class Application {
 
             Maintenance foundMaint = maintenanceDAO.find(manut.getMaintenanceId());
             System.out.println("Maintenance trovata: " + foundMaint);
-        }
+        }*/
 
 
 
@@ -82,11 +83,11 @@ public class Application {
 
         // Salva il vendor nel database
 
-        vd.save(hv1);
+       /* vd.save(hv1);
         vd.save(hv2);
         vd.save(hv3);
         vd.save(mv1);
-        vd.save(mv2);
+        vd.save(mv2);*/
 
 
         User user1 = new User("Daenerys", "Targaryen", LocalDate.of(1995,1,14));
@@ -96,14 +97,14 @@ public class Application {
         User user5 = new User("Arya", "Stark", LocalDate.of(2004, 12, 11));
 
 
-        ud.save(user1);
+       /* ud.save(user1);
         ud.save(user2);
         ud.save(user3);
         ud.save(user4);
-        ud.save(user5);
+        ud.save(user5);*/
 
 
-        CardsDAO cd = new CardsDAO(em);//vendors
+        CardsDAO cd = new CardsDAO(em);
 
         // recuper0 utenti dal DB
         User user1DB = ud.findById(1L);
@@ -126,13 +127,63 @@ public class Application {
         Card card4 = new Card(LocalDate.of(2024, 5, 20), user4);
         Card card5 = new Card(LocalDate.of(2024, 7, 5), user5);
 
-        cd.save(card1);
+        /*cd.save(card1);
         cd.save(card2);
         cd.save(card3);
         cd.save(card4);
-        cd.save(card5);
+        cd.save(card5);*/
+
+        PassDAO pd = new PassDAO(em);
+
+        // Recupero card  dal DB
+        Card c1 = cd.findById(1L);
+        Card c2 = cd.findById(2L);
+        Card c3 = cd.findById(3L);
+        Card c4 = cd.findById(4L);
+        Card c5 = cd.findById(5L);
+
+       //creo i pass
+        LocalDate today = LocalDate.now();
+
+        Pass pass1 = new Pass(c1, today, PassType.MONTHLY);
+        pass1.setVendor(vendor1);
+
+        Pass pass2 = new Pass(c2, today.minusDays(10), PassType.WEEKLY);
+        pass2.setVendor(vendor2);
+
+        Pass pass3 = new Pass(c3, today.minusDays(5), PassType.MONTHLY);
+        pass3.setVendor(vendor3);
+
+        Pass pass4 = new Pass(c4, today, PassType.WEEKLY);
+        pass4.setVendor(vendor4);
+
+        Pass pass5 = new Pass(c5, today.minusDays(20), PassType.MONTHLY);
+        pass5.setVendor(vendor5);
+
+       /* pd.save(pass1);
+        pd.save(pass2);
+        pd.save(pass3);
+        pd.save(pass4);
+        pd.save(pass5);*/
+
+        RoutesDao rd = new RoutesDao(em);
+
+// Crea delle route realistiche
+        Route route1 = new Route("Centro", "Stazione", 35);
+        Route route2 = new Route("Stazione", "Aeroporto", 50);
+        Route route3 = new Route("Università", "Centro", 25);
+        Route route4 = new Route("Ospedale", "Quartiere Nord", 40);
+        Route route5 = new Route("Quartiere Sud", "Mercato", 30);
+
+// Salva le route nel DB
+      /*  rd.save(route1);
+        rd.save(route2);
+        rd.save(route3);
+        rd.save(route4);
+        rd.save(route5);*/
 
         em.close();
         emf.close();
     }
+
 }
