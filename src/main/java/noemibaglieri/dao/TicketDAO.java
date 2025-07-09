@@ -21,6 +21,7 @@ public class TicketDAO {
         transaction.begin();
         entityManager.persist(ticket);
         transaction.commit();
+        System.out.println("ticket salvato");
     }
 
     public Ticket findTicketById(Long id) {

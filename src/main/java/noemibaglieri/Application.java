@@ -220,7 +220,11 @@ public class Application {
         Ticket ticket4 = new Ticket(LocalDate.now(), 1.50, vendor2);
         Ticket ticket5 = new Ticket(LocalDate.now(), 1.50, vendor5);
 
-
+        ticketDAO.save(ticket1);
+        ticketDAO.save(ticket2);
+        ticketDAO.save(ticket3);
+        ticketDAO.save(ticket4);
+        ticketDAO.save(ticket5);
 
 
         em.close();
