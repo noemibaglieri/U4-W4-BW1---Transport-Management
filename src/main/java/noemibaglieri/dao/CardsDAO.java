@@ -44,10 +44,4 @@ public class CardsDAO {
         return notExpired && isActive;
     }
 
-
-
-
-
-
-
 }

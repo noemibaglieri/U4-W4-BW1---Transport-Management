@@ -245,10 +245,6 @@ public class Application {
         ticketDAO.save(ticket5);
 
 
-
-        cd.isCardValid(4L);
-        pd.isPassValid(3L);
-
         ticket1.setVehicle(bus1);
         ticketDAO.save(ticket1);
         ticket2.setVehicle(tram1);
@@ -298,7 +294,6 @@ public class Application {
                         " (causa: " + m.getMaintenanceCause() + ")");
             }
         }
-
 
 
 
