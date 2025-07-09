@@ -311,6 +311,11 @@ public class Application {
 
         vd.issuePass(selectedVendor, selectedCard, PassType.WEEKLY);
 
+        //test query biglietti emessi in tot giorni
+        Vendor vendor = vd.findById(1L);
+        LocalDate fromDate = LocalDate.now().minusDays(7);
+        LocalDate toDate = LocalDate.now();
+        vd.findTicketsIssuedByVendorBetween(vendor, fromDate, toDate);
 
 
 

@@ -2,12 +2,14 @@ package noemibaglieri.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import noemibaglieri.entities.*;
 import noemibaglieri.enums.PassType;
 import noemibaglieri.exceptions.UserNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class VendorsDAO {
     private final EntityManager entityManager;
@@ -88,6 +90,23 @@ public void issuePass(Vendor vendor, Card card, PassType type) {
     System.out.println( type + " pass issued by vendor '" + vendor.getVendorName()
             + "' for card ID: " + card.getId() + " (Pass ID: " + pass.getPassId() + ")");
 }
+
+//query per cercare un numero di ticket emessi in un lasso di tempo
+public List<Ticket> findTicketsIssuedByVendorBetween(Vendor vendor, LocalDate fromDate, LocalDate toDate) {
+    TypedQuery<Ticket> query = entityManager.createQuery(
+            "SELECT t FROM Ticket t WHERE t.vendor = :vendor AND t.dateOfPurchase BETWEEN :from AND :to", Ticket.class);
+    query.setParameter("vendor", vendor);
+    query.setParameter("from", fromDate);
+    query.setParameter("to", toDate);
+
+    List<Ticket> result = query.getResultList();
+
+    System.out.println("Found " + result.size() + " tickets issued by vendor '" + vendor.getVendorName() +
+            "' between " + fromDate + " and " + toDate);
+
+    return result;
+}
+
 
 
 
