@@ -5,6 +5,8 @@ import jakarta.persistence.EntityTransaction;
 import noemibaglieri.entities.Card;
 import noemibaglieri.exceptions.CardNotFoundException;
 
+import java.time.LocalDate;
+
 public class CardsDAO {
     private final EntityManager entityManager;
 
@@ -25,4 +27,27 @@ public class CardsDAO {
         if (found == null) throw new CardNotFoundException(cardId);
         return found;
     }
+
+    //metodo per controllare che una card sia valida
+    //(controllo che la data di scadenza sia successiva a oggi e che sia attiva)
+    public boolean isCardValid(Long cardId) {
+        Card card = entityManager.find(Card.class, cardId);
+        if (card == null) {
+            System.out.println("Card con ID " + cardId + " non trovata.");
+            throw new CardNotFoundException(cardId);
+        }
+        boolean notExpired =  card.getExpiryDate().isAfter(LocalDate.now());
+        boolean isActive = card.isActive();
+        if (notExpired && isActive) {
+            System.out.println("La tessera è valida.");}
+        else {System.out.println("La tessera NON è valida.");}
+        return notExpired && isActive;
+    }
+
+
+
+
+
+
+
 }

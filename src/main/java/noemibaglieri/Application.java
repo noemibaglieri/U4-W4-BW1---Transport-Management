@@ -227,6 +227,9 @@ public class Application {
         ticketDAO.save(ticket5);
 
 
+        cd.isCardValid(4L);
+        pd.isPassValid(3L);
+
         em.close();
         emf.close();
     }
