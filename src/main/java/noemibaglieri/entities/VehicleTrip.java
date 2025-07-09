@@ -34,7 +34,7 @@ public class VehicleTrip {
         this.actualDuration = actualDuration;
     }
 
-    // Getter e setter...
+    // Getter e setter
 
     public Long getTripId() {
         return tripId;
