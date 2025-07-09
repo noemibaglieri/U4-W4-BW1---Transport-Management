@@ -2,10 +2,8 @@ package noemibaglieri.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-import noemibaglieri.entities.HumanVendor;
-import noemibaglieri.entities.MachineVendor;
-import noemibaglieri.entities.Ticket;
-import noemibaglieri.entities.Vendor;
+import noemibaglieri.entities.*;
+import noemibaglieri.enums.PassType;
 import noemibaglieri.exceptions.UserNotFoundException;
 
 import java.time.LocalDate;
@@ -62,6 +60,57 @@ public void issueTicket(Vendor vendor, double price) {
     System.out.println("Ticket issued by vendor '" + vendor.getVendorName()
             + "' with ID: " + ticket.getTicketId() + " and price: €" + price);
 }
+
+//metodo per emettere un pass
+public void issuePass(Vendor vendor, Card card, PassType type) {
+
+    if (!isVendorAvailable(vendor)) {
+        System.out.println("Pass not issued. Vendor '" + vendor.getVendorName() + "' is not available at the moment.");
+        return;
+    }
+
+
+    boolean cardValid = card.getExpiryDate().isAfter(LocalDate.now()) && card.isActive();
+    if (!cardValid) {
+        System.out.println("Pass not issued. Card ID: " + card.getId() + " is not valid.");
+        return;
+    }
+
+    EntityTransaction transaction = entityManager.getTransaction();
+    transaction.begin();
+
+    LocalDate startDate = LocalDate.now();
+    Pass pass = new Pass(card, startDate, type);
+    pass.setVendor(vendor);
+    entityManager.persist(pass);
+
+    transaction.commit();
+    System.out.println( type + " pass issued by vendor '" + vendor.getVendorName()
+            + "' for card ID: " + card.getId() + " (Pass ID: " + pass.getPassId() + ")");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
