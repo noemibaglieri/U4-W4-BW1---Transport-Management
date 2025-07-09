@@ -5,6 +5,7 @@ package noemibaglieri.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import noemibaglieri.entities.Ticket;
+import noemibaglieri.exceptions.TicketNotFoundException;
 
 public class TicketDAO {
 
@@ -25,7 +26,12 @@ public class TicketDAO {
     }
 
     public Ticket findTicketById(Long id) {
-        return entityManager.find(Ticket.class, id);
+        Ticket found = entityManager.find(Ticket.class, id);
+        if (found == null) {
+            throw new TicketNotFoundException(id);
+
+        }
+        return found;
     }
 
 }

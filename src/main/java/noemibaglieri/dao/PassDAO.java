@@ -3,6 +3,7 @@ package noemibaglieri.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import noemibaglieri.entities.Pass;
+import noemibaglieri.exceptions.PassNotFoundException;
 
 public class PassDAO {
 
@@ -18,9 +19,16 @@ public class PassDAO {
         transaction.begin();
         entityManager.persist(pass);
         transaction.commit();
+        System.out.println("pass salvato");
     }
 
     public Pass findPassById(Long id) {
-        return entityManager.find(Pass.class, id);
+        Pass pass =  entityManager.find(Pass.class, id);
+        if (pass == null)
+        { throw new PassNotFoundException(id);
+        }
+
+        return pass;
     }
-}
+    }
+
