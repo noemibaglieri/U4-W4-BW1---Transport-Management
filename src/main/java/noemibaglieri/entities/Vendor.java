@@ -32,6 +32,7 @@ public abstract class Vendor {
         return vendorId;
     }
 
+
     public String getVendorName() {
         return name;
     }
