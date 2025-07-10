@@ -10,7 +10,10 @@ import noemibaglieri.enums.PassType;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("U4W4BW1");
@@ -21,6 +24,7 @@ public class Application {
         MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
         TicketDAO ticketDAO = new TicketDAO(em);
         ServiceDAO serviceDAO = new ServiceDAO(em);
+        RoutesDao routesDao = new RoutesDao(em);
 
 
 
@@ -38,6 +42,8 @@ public class Application {
         Tram tram3 = new Tram("TR302", 120, false);
         Tram tram4 = new Tram("TR303", 110, true);
         Tram tram5 = new Tram("TR304", 100, true);
+
+
 
         // Salvo il veicolo nel database
         vehicleDAO.save(tram1);
@@ -227,12 +233,15 @@ public class Application {
         VehicleTrip trip4 = new VehicleTrip(v4, r4, LocalDate.of(2025, 4, 11), 41);
         VehicleTrip trip5 = new VehicleTrip(v5, r5, LocalDate.of(2025, 6, 12), 29);
 
+        VehicleTrip trip7 = new VehicleTrip(v2, r2, LocalDate.of(2025, 5, 10), 52);
+
 
         td.save(trip1);
         td.save(trip2);
         td.save(trip3);
         td.save(trip4);
         td.save(trip5);
+        td.save(trip7);
 
         Ticket ticket1 = new Ticket(LocalDate.now(), 1.50, vendor1);
         Ticket ticket2 = new Ticket(LocalDate.now(), 1.50, vendor2);
@@ -404,19 +413,58 @@ public class Application {
 
 
 
-        Vendor selectedVendor = vd.findById(1L);
-        Card selectedCard = cd.findById(3L);
+//        Vendor selectedVendor = vd.findById(1L);
+//        Card selectedCard = cd.findById(3L);
+//
+//        vd.issueTicket(selectedVendor, 1.50);
+//
+//
+//        vd.issuePass(selectedVendor, selectedCard, PassType.WEEKLY);
+//
+//        //test query biglietti emessi in tot giorni
+//        Vendor vendor = vd.findById(1L);
+//        LocalDate fromDate = LocalDate.now().minusDays(7);
+//        LocalDate toDate = LocalDate.now();
+//        vd.findTicketsIssuedByVendorBetween(vendor, fromDate, toDate);
 
-        vd.issueTicket(selectedVendor, 1.50);
+
+        List<VehicleTrip> trips = routesDao.findVehiclesByRoute(2L);
 
 
-        vd.issuePass(selectedVendor, selectedCard, PassType.WEEKLY);
+        Route route = routesDao.findById(2L);
+        System.out.println("Vehicles that traveled on route " + route.getRouteId() +
+                " (from " + route.getStartArea() + " to " + route.getEndArea() + "):");
 
-        //test query biglietti emessi in tot giorni
-        Vendor vendor = vd.findById(1L);
-        LocalDate fromDate = LocalDate.now().minusDays(7);
-        LocalDate toDate = LocalDate.now();
-        vd.findTicketsIssuedByVendorBetween(vendor, fromDate, toDate);
+
+        Route route7 = routesDao.findById(1L);
+        System.out.println("Vehicles that traveled on route " + route7.getRouteId() +
+                " (from " + route7.getStartArea() + " to " + route7.getEndArea() + "):");
+
+        Set<String> printRoute = new HashSet<>();
+
+//for (int i = 0; i < trips.toArray().length -1 ; i++) {
+//    if(trips.get(i).getDate() != trips.get(i + 1).getDate() && trips.get(i).getVehicle().getName() != trips.get(i + 1).getVehicle().getName())
+//    {
+//        System.out.println("Vehicle: " + trips.get(i).getVehicle().getName() +
+//                " - Date: " + trips.get(i).getDate() +
+//                " - Duration: " + trips.get(i).getActualDuration() + " minutes");
+//    }
+//}
+
+
+
+
+        for (VehicleTrip trip : trips) {
+
+            printRoute.add(Collections.singleton(trip.getDate()).toString());
+            System.out.println("Route del Veivolo ID : " + trip.getVehicle().getName() + printRoute.toString());
+            break;
+        }
+
+
+
+
+
 
         em.close();
         emf.close();
