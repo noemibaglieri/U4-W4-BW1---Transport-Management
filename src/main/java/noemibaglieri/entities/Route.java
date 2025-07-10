@@ -62,5 +62,14 @@ public class Route {
     }
 
 
+    @Override
+    public String toString() {
+        return "Route{" +
+                "routeId=" + routeId +
+                ", startArea='" + startArea + '\'' +
+                ", endArea='" + endArea + '\'' +
+                ", expectedDuration=" + expectedDuration +
+                '}';
+    }
 }
 

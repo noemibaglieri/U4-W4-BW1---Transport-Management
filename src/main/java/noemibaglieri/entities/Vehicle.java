@@ -41,6 +41,10 @@ public abstract class Vehicle {
     public Long getVehicleId() {
         return vehicleId;
     }
+    
+    public String getName() {
+        return name;
+    }
 
     public int getSize() {
         return size;
