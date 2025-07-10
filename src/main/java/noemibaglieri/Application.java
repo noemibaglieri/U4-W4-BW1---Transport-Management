@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import noemibaglieri.enums.PassType;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -142,11 +143,11 @@ public class Application {
         Vendor vendor5 = vd.findById(5L);
 
         // creo cards
-        Card card1 = new Card(LocalDate.of(2024, 7, 1), user1);
-        Card card2 = new Card(LocalDate.of(2024, 8, 1), user2);
-        Card card3 = new Card(LocalDate.of(2024, 6, 15), user3);
-        Card card4 = new Card(LocalDate.of(2024, 5, 20), user4);
-        Card card5 = new Card(LocalDate.of(2024, 7, 5), user5);
+        Card card1 = new Card(LocalDate.of(2025, 7, 1), user1);
+        Card card2 = new Card(LocalDate.of(2025, 8, 1), user2);
+        Card card3 = new Card(LocalDate.of(2025, 6, 15), user3);
+        Card card4 = new Card(LocalDate.of(2025, 5, 20), user4);
+        Card card5 = new Card(LocalDate.of(2025, 7, 5), user5);
 
         cd.save(card1);
         cd.save(card2);
@@ -296,6 +297,11 @@ public class Application {
             }
         }
 
+        Duration difference = td.calculateTimeDifference(1L);
+        System.out.println("Time difference in minutes: " + difference.toMinutes());
+
+        String info = td.getTimeDifferenceInfo(1L);
+        System.out.println(info);
 
         Service servizioBus6 = new Service(
                 bus6,
@@ -398,6 +404,19 @@ public class Application {
 
 
 
+        Vendor selectedVendor = vd.findById(1L);
+        Card selectedCard = cd.findById(3L);
+
+        vd.issueTicket(selectedVendor, 1.50);
+
+
+        vd.issuePass(selectedVendor, selectedCard, PassType.WEEKLY);
+
+        //test query biglietti emessi in tot giorni
+        Vendor vendor = vd.findById(1L);
+        LocalDate fromDate = LocalDate.now().minusDays(7);
+        LocalDate toDate = LocalDate.now();
+        vd.findTicketsIssuedByVendorBetween(vendor, fromDate, toDate);
 
         em.close();
         emf.close();
