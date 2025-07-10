@@ -3,6 +3,7 @@ package noemibaglieri.dao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import noemibaglieri.entities.Pass;
+import noemibaglieri.exceptions.InvalidPassException;
 import noemibaglieri.exceptions.PassNotFoundException;
 
 import java.time.LocalDate;
@@ -35,6 +36,8 @@ public class PassDAO {
     //metodo per verificare la validità di un pass tramite id
     // (verifico che la data di scadenza sia dopo la data odierna)
 
+
+
     public boolean isPassValid(Long passId) {
         Pass pass = entityManager.find(Pass.class, passId);
         if (pass == null) {
@@ -44,16 +47,13 @@ public class PassDAO {
 
         boolean notExpired = pass.getEndDate().isAfter(LocalDate.now());
 
-        if (notExpired) {
-            System.out.println("Il pass con ID " + passId + " è valido.");
-        } else {
-            System.out.println("Il pass con ID " + passId + " NON è valido (scaduto).");
+        if (!notExpired) {
+            throw new InvalidPassException(passId);
         }
 
-        return notExpired;
+        System.out.println("Il pass con ID " + passId + " è valido.");
+        return true;
     }
-
-
 
 }
 

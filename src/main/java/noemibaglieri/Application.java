@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import noemibaglieri.enums.PassType;
+import noemibaglieri.exceptions.InvalidPassException;
+import noemibaglieri.exceptions.PassNotFoundException;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -437,7 +439,14 @@ public class Application {
                     " - Date: " + trip.getDate() +
                     " - Duration: " + trip.getActualDuration() + " minutes");
         }
-
+//metodo per trovare pass validi o non validi
+        try {
+            if (pd.isPassValid(2L)) {
+                System.out.println("Il pass è valido.");
+            }
+        } catch (InvalidPassException | PassNotFoundException e) {
+            System.out.println("Errore: " + e.getMessage());
+        }
 
 
         em.close();

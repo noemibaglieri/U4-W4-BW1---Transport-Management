@@ -31,16 +31,17 @@ public class CardsDAO {
     //metodo per controllare che una card sia valida
     //(controllo che la data di scadenza sia successiva a oggi e che sia attiva)
     public boolean isCardValid(Long cardId) {
-        Card card = entityManager.find(Card.class, cardId);
-        if (card == null) {
-            System.out.println("Card con ID " + cardId + " non trovata.");
-            throw new CardNotFoundException(cardId);
-        }
-        boolean notExpired =  card.getExpiryDate().isAfter(LocalDate.now());
+        Card card = findById(cardId);  // già lancia cardnotfound se null
+
+        boolean notExpired = card.getExpiryDate().isAfter(LocalDate.now());
         boolean isActive = card.isActive();
+
         if (notExpired && isActive) {
-            System.out.println("La tessera è valida.");}
-        else {System.out.println("La tessera NON è valida.");}
+            System.out.println("La tessera è valida.");
+        } else {
+            System.out.println("La tessera NON è valida.");
+        }
+
         return notExpired && isActive;
     }
 
