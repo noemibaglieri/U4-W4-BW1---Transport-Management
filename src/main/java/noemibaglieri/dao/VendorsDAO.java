@@ -5,7 +5,10 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
 import noemibaglieri.entities.*;
 import noemibaglieri.enums.PassType;
+import noemibaglieri.exceptions.InvalidCardException;
 import noemibaglieri.exceptions.UserNotFoundException;
+import noemibaglieri.exceptions.VendorNotFoundException;
+import noemibaglieri.exceptions.VendorUnavailableException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -48,8 +51,7 @@ public class VendorsDAO {
 
 public void issueTicket(Vendor vendor, double price) {
     if (!isVendorAvailable(vendor)) {
-        System.out.println("Ticket not issued. Vendor '" + vendor.getVendorName() + "' is not available at the moment.");
-        return;
+        throw new VendorUnavailableException(vendor.getVendorName());
     }
     
     EntityTransaction transaction = entityManager.getTransaction();
@@ -67,15 +69,13 @@ public void issueTicket(Vendor vendor, double price) {
 public void issuePass(Vendor vendor, Card card, PassType type) {
 
     if (!isVendorAvailable(vendor)) {
-        System.out.println("Pass not issued. Vendor '" + vendor.getVendorName() + "' is not available at the moment.");
-        return;
+        throw new VendorUnavailableException(vendor.getVendorName());
     }
 
 
     boolean cardValid = card.getExpiryDate().isAfter(LocalDate.now()) && card.isActive();
     if (!cardValid) {
-        System.out.println("Pass not issued. Card ID: " + card.getId() + " is not valid.");
-        return;
+       throw new InvalidCardException(card.getId());
     }
 
     EntityTransaction transaction = entityManager.getTransaction();
@@ -91,8 +91,11 @@ public void issuePass(Vendor vendor, Card card, PassType type) {
             + "' for card ID: " + card.getId() + " (Pass ID: " + pass.getPassId() + ")");
 }
 
-//query per cercare un numero di ticket emessi in un lasso di tempo
+//query per cercare un numero di ticket emessi da un vendor in un lasso di tempo
 public List<Ticket> findTicketsIssuedByVendorBetween(Vendor vendor, LocalDate fromDate, LocalDate toDate) {
+    if (vendor == null) {
+        throw new VendorNotFoundException(null); // oppure passare un ID se lo conosci
+    }
     TypedQuery<Ticket> query = entityManager.createQuery(
             "SELECT t FROM Ticket t WHERE t.vendor = :vendor AND t.dateOfPurchase BETWEEN :from AND :to", Ticket.class);
     query.setParameter("vendor", vendor);
