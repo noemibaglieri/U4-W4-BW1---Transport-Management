@@ -414,12 +414,12 @@ public class Application {
 
 
       Vendor selectedVendor = vd.findById(1L);
-      Card selectedCard = cd.findById(3L);
+
 
     vd.issueTicket(selectedVendor, 1.50);
 
 
-       vd.issuePass(selectedVendor, selectedCard, PassType.WEEKLY);
+
 
         //test query biglietti emessi in tot giorni
       Vendor vendor = vd.findById(1L);
