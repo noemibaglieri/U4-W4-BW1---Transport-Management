@@ -10,10 +10,8 @@ import noemibaglieri.enums.PassType;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+;
 
 public class Application {
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("U4W4BW1");
@@ -233,7 +231,7 @@ public class Application {
         VehicleTrip trip4 = new VehicleTrip(v4, r4, LocalDate.of(2025, 4, 11), 41);
         VehicleTrip trip5 = new VehicleTrip(v5, r5, LocalDate.of(2025, 6, 12), 29);
 
-        VehicleTrip trip7 = new VehicleTrip(v2, r2, LocalDate.of(2025, 5, 10), 52);
+        VehicleTrip trip7 = new VehicleTrip(v1, r1, LocalDate.of(2025, 5, 10), 52);
 
 
         td.save(trip1);
@@ -413,56 +411,32 @@ public class Application {
 
 
 
-//        Vendor selectedVendor = vd.findById(1L);
-//        Card selectedCard = cd.findById(3L);
-//
-//        vd.issueTicket(selectedVendor, 1.50);
-//
-//
-//        vd.issuePass(selectedVendor, selectedCard, PassType.WEEKLY);
-//
-//        //test query biglietti emessi in tot giorni
-//        Vendor vendor = vd.findById(1L);
-//        LocalDate fromDate = LocalDate.now().minusDays(7);
-//        LocalDate toDate = LocalDate.now();
-//        vd.findTicketsIssuedByVendorBetween(vendor, fromDate, toDate);
+      Vendor selectedVendor = vd.findById(1L);
+      Card selectedCard = cd.findById(3L);
+
+    vd.issueTicket(selectedVendor, 1.50);
 
 
-        List<VehicleTrip> trips = routesDao.findVehiclesByRoute(2L);
+       vd.issuePass(selectedVendor, selectedCard, PassType.WEEKLY);
+
+        //test query biglietti emessi in tot giorni
+      Vendor vendor = vd.findById(1L);
+       LocalDate fromDate = LocalDate.now().minusDays(7);
+       LocalDate toDate = LocalDate.now();
+      vd.findTicketsIssuedByVendorBetween(vendor, fromDate, toDate);
 
 
-        Route route = routesDao.findById(2L);
+
+        List<VehicleTrip> trips = routesDao.findVehiclesByRoute(1L);
+
+        Route route = routesDao.findById(1L);
         System.out.println("Vehicles that traveled on route " + route.getRouteId() +
                 " (from " + route.getStartArea() + " to " + route.getEndArea() + "):");
-
-
-        Route route7 = routesDao.findById(1L);
-        System.out.println("Vehicles that traveled on route " + route7.getRouteId() +
-                " (from " + route7.getStartArea() + " to " + route7.getEndArea() + "):");
-
-        Set<String> printRoute = new HashSet<>();
-
-//for (int i = 0; i < trips.toArray().length -1 ; i++) {
-//    if(trips.get(i).getDate() != trips.get(i + 1).getDate() && trips.get(i).getVehicle().getName() != trips.get(i + 1).getVehicle().getName())
-//    {
-//        System.out.println("Vehicle: " + trips.get(i).getVehicle().getName() +
-//                " - Date: " + trips.get(i).getDate() +
-//                " - Duration: " + trips.get(i).getActualDuration() + " minutes");
-//    }
-//}
-
-
-
-
         for (VehicleTrip trip : trips) {
-
-            printRoute.add(Collections.singleton(trip.getDate()).toString());
-            System.out.println("Route del Veivolo ID : " + trip.getVehicle().getName() + printRoute.toString());
-            break;
+            System.out.println("Vehicle: " + trip.getVehicle().getName() +
+                    " - Date: " + trip.getDate() +
+                    " - Duration: " + trip.getActualDuration() + " minutes");
         }
-
-
-
 
 
 
