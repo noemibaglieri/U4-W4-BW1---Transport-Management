@@ -82,5 +82,11 @@ public class MaintenanceDAO {
         return query.getResultList();
     }
 
+    public List<Maintenance> findAll() {
+        TypedQuery<Maintenance> q = em.createQuery(
+                "SELECT m FROM Maintenance m", Maintenance.class
+        );
+        return q.getResultList();
+    }
 
 }

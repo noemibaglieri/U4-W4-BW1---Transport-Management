@@ -60,4 +60,11 @@ public class RoutesDao {
         }
     }
 
+    public List<Route> findAll() {
+        TypedQuery<Route> q = entityManager.createQuery(
+                "SELECT r FROM Route r", Route.class
+        );
+        return q.getResultList();
+    }
+
 }

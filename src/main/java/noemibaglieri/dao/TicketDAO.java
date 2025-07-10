@@ -8,6 +8,8 @@ import jakarta.persistence.TypedQuery;
 import noemibaglieri.entities.Ticket;
 import noemibaglieri.exceptions.TicketNotFoundException;
 
+import java.util.List;
+
 public class TicketDAO {
 
     private final EntityManager entityManager;
@@ -49,6 +51,20 @@ public class TicketDAO {
         return query.getSingleResult();
     }
 
+    public List<Ticket> findPendingTickets() {
+        TypedQuery<Ticket> query = entityManager.createQuery(
+                "SELECT t FROM Ticket t WHERE t.isValidated = false", Ticket.class
+        );
+        return query.getResultList();
+    }
+
+
+    public void update(Ticket ticket) {
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        entityManager.merge(ticket);
+        transaction.commit();
+    }
 
 
 
