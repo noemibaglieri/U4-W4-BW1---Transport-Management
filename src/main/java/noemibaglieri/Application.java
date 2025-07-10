@@ -19,6 +19,7 @@ public class Application {
         VehicleDAO vehicleDAO = new VehicleDAO(em);
         MaintenanceDAO maintenanceDAO = new MaintenanceDAO(em);
         TicketDAO ticketDAO = new TicketDAO(em);
+        ServiceDAO serviceDAO = new ServiceDAO(em);
 
 
 
@@ -294,6 +295,106 @@ public class Application {
                         " (causa: " + m.getMaintenanceCause() + ")");
             }
         }
+
+
+        Service servizioBus6 = new Service(
+                bus6,
+                LocalDate.of(2025, 7, 1),
+                LocalDate.of(2025, 7, 10)
+        );
+        serviceDAO.save(servizioBus6);
+        System.out.println("Periodo di servizio aggiunto: " + servizioBus6);
+
+
+
+
+
+
+        Maintenance manut = new Maintenance(
+                bus6,
+                LocalDate.now(),
+                LocalDate.now().plusDays(3),
+                "Controllo freni"
+        );
+        maintenanceDAO.save(manut);
+
+
+        boolean inServizioOggi = serviceDAO.isVehicleInService(bus6, LocalDate.now());
+        System.out.println("Il bus oggi " + (inServizioOggi ? "È in servizio" : "NON è in servizio"));
+
+
+        // 1. Creo un bus7
+        Bus bus7 = new Bus("CD309", 50, true);
+        vehicleDAO.save(bus7);
+
+        // 2. Creo manutenzioni per bus7
+        Maintenance manut1 = new Maintenance(
+                bus7,
+                LocalDate.of(2025, 7, 5),
+                LocalDate.of(2025, 7, 8),
+                "Controllo freni"
+        );
+        maintenanceDAO.save(manut1);
+
+        Maintenance manut4 = new Maintenance(
+                bus7,
+                LocalDate.of(2025, 7, 15),
+                LocalDate.of(2025, 7, 18),
+                "Revisione motore"
+        );
+        maintenanceDAO.save(manut4);
+
+        // 3. Recupero e stampo tutte le manutenzioni di bus7
+        List<Maintenance> manutenzioniBus7 = maintenanceDAO.findByVehicle(bus7);
+        System.out.println("Manutenzioni per bus7:");
+        manutenzioniBus7.forEach(System.out::println);
+
+        // 4. Controllo lo stato di bus7 in date diverse
+        LocalDate[] datesToCheck = {
+                LocalDate.of(2025, 7, 4),  // prima manutenzione
+                LocalDate.of(2025, 7, 6),  // durante prima manutenzione
+                LocalDate.of(2025, 7, 10), // tra manutenzioni
+                LocalDate.of(2025, 7, 16), // durante seconda manutenzione
+                LocalDate.of(2025, 7, 20)  // dopo manutenzioni
+        };
+
+        for (LocalDate date : datesToCheck) {
+            String status = serviceDAO.getVehicleStatus(bus7, date);
+            System.out.printf("Data %s: Stato del bus7 = %s%n", date, status);
+        }
+
+        // 5. Recupero e stampo tutti i veicoli in servizio e in manutenzione oggi
+        LocalDate today1 = LocalDate.now();
+        List<Vehicle> inServiceToday = serviceDAO.getVehiclesInService(today1);
+        List<Vehicle> inMaintenanceToday = serviceDAO.getVehiclesInMaintenance(today1);
+
+        System.out.println("\nVeicoli in servizio oggi:");
+        inServiceToday.forEach(v -> System.out.println(" - Veicolo ID: " + v.getVehicleId()));
+
+        System.out.println("\nVeicoli in manutenzione oggi:");
+        inMaintenanceToday.forEach(v -> System.out.println(" - Veicolo ID: " + v.getVehicleId()));
+
+
+        Service servizioBus7 = new Service(bus7,LocalDate.of(2025,7,1), LocalDate.of(2025,7,10));
+        serviceDAO.save(servizioBus7);
+
+        List<Service> serviziBus7 = serviceDAO.findByVehicle(bus7);
+        System.out.println("Storico periodi di servizio per il bus7:");
+        if (serviziBus7.isEmpty()) {
+            System.out.println("Nessun periodo di servizio trovato per questo bus.");
+        } else {
+            for (Service s : serviziBus7) {
+                System.out.printf("- Dal %s al %s%n", s.getStartDate(), s.getEndDate());
+            }
+        }
+
+
+
+        long vidimati = ticketDAO.countValidatedTickets();
+        long nonVidimati = ticketDAO.countNonValidatedTickets();
+
+        System.out.println("Ticket vidimati: " + vidimati);
+        System.out.println("Ticket NON vidimati: " + nonVidimati);
 
 
 

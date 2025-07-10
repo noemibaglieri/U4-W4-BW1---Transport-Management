@@ -17,6 +17,7 @@
         <class>noemibaglieri.entities.Vehicle</class>
         <class>noemibaglieri.entities.VehicleTrip</class>
         <class>noemibaglieri.entities.Vendor</class>
+        <class>noemibaglieri.entities.Service</class>
         <!-- Serve specificare l'elenco delle entities con tanto di package -->
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/U4W4BW1"/>

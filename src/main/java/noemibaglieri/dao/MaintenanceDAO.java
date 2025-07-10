@@ -22,13 +22,18 @@ public class MaintenanceDAO {
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
-            em.persist(maintenance);
+            if (maintenance.getMaintenanceId() == null) {
+                em.persist(maintenance); // Nuovo oggetto, persisti
+            } else {
+                em.merge(maintenance);   // Oggetto esistente, fai merge
+            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) transaction.rollback();
             e.printStackTrace();
         }
     }
+
 
     // Cerca una manutenzione per ID
     public Maintenance find(Long id) {
@@ -46,7 +51,7 @@ public class MaintenanceDAO {
         return query.getResultList();
     }
 
-    // Verifica se un veicolo è attualmente in manutenzione (oggi tra startDate e endDate)
+    // Verifica se un veicolo è attualmente in manutenzione
     public boolean isVehicleInMaintenance(Vehicle vehicle) {
         TypedQuery<Maintenance> query = em.createQuery(
                 "SELECT m FROM Maintenance m " +

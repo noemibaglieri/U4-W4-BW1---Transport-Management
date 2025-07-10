@@ -4,6 +4,7 @@ package noemibaglieri.dao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 import noemibaglieri.entities.Ticket;
 import noemibaglieri.exceptions.TicketNotFoundException;
 
@@ -33,6 +34,23 @@ public class TicketDAO {
         }
         return found;
     }
+
+    public long countValidatedTickets() {
+        TypedQuery<Long> query = entityManager.createQuery(
+                "SELECT COUNT(t) FROM Ticket t WHERE t.isValidated = true", Long.class
+        );
+        return query.getSingleResult();
+    }
+
+    public long countNonValidatedTickets() {
+        TypedQuery<Long> query = entityManager.createQuery(
+                "SELECT COUNT(t) FROM Ticket t WHERE t.isValidated = false", Long.class
+        );
+        return query.getSingleResult();
+    }
+
+
+
 
 }
 
