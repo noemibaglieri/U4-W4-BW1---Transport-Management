@@ -91,7 +91,6 @@ public class Application {
                                         LocalDate dataFine = LocalDate.parse(scanner.nextLine(), formatter);
                                         System.out.println(vd.findTicketsIssuedByVendorBetween(vendorName, data, dataFine));
                                     } else if (ticketChoice == 2) {
-                                        System.out.println("Funzione non implementata");
                                         System.out.println("Digita 1 per riprovare");
                                         System.out.println("Digita 5 per tornare indietro");
                                         System.out.println("Digita 0 per uscire");
@@ -152,6 +151,107 @@ public class Application {
                     userChoice = scanner.nextInt();
 
                     if (userChoice == 1) {
+                        int purchaseChoice = -1;
+                        while (purchaseChoice != 0 && purchaseChoice != 5) {
+                            System.out.println("Dove vuoi acquistare i biglietti?");
+                            System.out.println("Digita 1 per Tabacchino");
+                            System.out.println("Digita 2 per Vending Machine");
+                            System.out.println("Digita 5 per tornare indietro");
+                            System.out.println("Digita 0 per uscire");
+                            purchaseChoice = scanner.nextInt();
+
+                            final double STANDARD_PRICE = 2.80;
+
+                            if (purchaseChoice == 1) {
+                                System.out.println("Tabacchini disponibili:");
+                                for (Vendor v : vd.findAll()) {
+                                    if (v instanceof HumanVendor) {
+                                        System.out.printf("  ID %d: %s (apertura %s - chiusura %s)%n",
+                                                v.getVendorId(),
+                                                v.getVendorName(),
+                                                ((HumanVendor) v).getOpeningTime(),
+                                                ((HumanVendor) v).getClosingTime()
+                                        );
+                                    }
+                                }
+
+                                System.out.println("Inserisci l'ID del venditore ");
+                                long vendorID = scanner.nextLong();
+                                Vendor vendor = vd.findById(vendorID);
+
+                                System.out.println("Inserisci ID della tratta:");
+                                System.out.println("Tratte disponibili:");
+                                List<Route> allRoutes = routesDao.findAll();
+                                for (Route r : allRoutes) {
+                                    System.out.println(r);
+                                }
+                                long routeId = scanner.nextLong();
+                                Route route = routesDao.findById(routeId);
+                                if (route == null) {
+                                    System.out.println("Tratta con ID " + routeId + " non trovata. Esco.");
+                                    return;
+                                }
+                                System.out.println("Hai scelto la tratta: " + route.getStartArea() + " → " + route.getEndArea());
+
+                                System.out.println("Prezzo del biglietto: €" + STANDARD_PRICE);
+                                System.out.println("Quanti biglietti vuoi acquistare?");
+                                int nBiglietti = scanner.nextInt();
+
+                                for (int i = 0; i < nBiglietti; i++) {
+                                    try {
+                                        vd.issueTicket(vendor, STANDARD_PRICE);
+                                    } catch (VendorUnavailableException vue) {
+                                        System.out.println("Venditore non disponibile: " + vue.getMessage());
+                                        break;
+                                    }
+                                }
+                                System.out.println("Hai acquistato " + nBiglietti + " biglietti per la tratta indicata.");
+
+                            } else if (purchaseChoice == 2) {
+                                System.out.println("Vending machine disponibili:");
+                                for (Vendor v : vd.findAll()) {
+                                    if (v instanceof MachineVendor) {
+                                        MachineVendor m = (MachineVendor) v;
+                                        System.out.printf("  ID %d: %s (%s)%n",
+                                                m.getVendorId(),
+                                                m.getVendorName(),
+                                                m.isActive() ? "ATTIVA" : "NON ATTIVA"
+                                        );
+                                    }
+                                }
+                                System.out.println("Inserisci l'ID della Vending Machine ");
+                                long vendorID = scanner.nextLong();
+                                Vendor vendor = vd.findById(vendorID);
+
+                                System.out.println("Inserisci ID della tratta:");
+                                System.out.println("Tratte disponibili:");
+                                List<Route> allRoutes = routesDao.findAll();
+                                for (Route r : allRoutes) {
+                                    System.out.println(r);
+                                }
+                                long routeId = scanner.nextLong();
+                                Route route = routesDao.findById(routeId);
+                                if (route == null) {
+                                    System.out.println("Tratta con ID " + routeId + " non trovata. Esco.");
+                                    return;
+                                }
+                                System.out.println("Hai scelto la tratta: " + route.getStartArea() + " → " + route.getEndArea());
+
+                                System.out.println("Prezzo del biglietto: €" + STANDARD_PRICE);
+                                System.out.println("Quanti biglietti vuoi acquistare?");
+                                int nBiglietti = scanner.nextInt();
+
+                                for (int i = 0; i < nBiglietti; i++) {
+                                    try {
+                                        vd.issueTicket(vendor, STANDARD_PRICE);
+                                    } catch (VendorUnavailableException vue) {
+                                        System.out.println("Venditore non disponibile: " + vue.getMessage());
+                                        break;
+                                    }
+                                }
+                                System.out.println("Hai acquistato " + nBiglietti + " biglietti per la tratta indicata.");
+                            }
+                        }
                     } else if (userChoice == 2) {
                         System.out.println("Dove vuoi acquistare l'abbonamento?");
                         System.out.println("Digita 1 per Tabacchino");
