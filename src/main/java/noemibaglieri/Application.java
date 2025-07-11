@@ -144,16 +144,15 @@ public class Application {
                 while (userChoice != 0 && userChoice != 5) {
                     System.out.println("Benvenuto nel menù utente");
                     System.out.println("Digita 1 per comprare i biglietti");
-                    System.out.println("Digita 2 per fare l'abbonamento");
+                    System.out.println("Digita 2 per fare l'abbonamento (non ancora implementato)");
                     System.out.println("Digita 3 per vidimare un biglietto");
                     System.out.println("Digita 5 per tornare indietro");
                     System.out.println("Digita 0 per uscire");
                     userChoice = scanner.nextInt();
 
                     if (userChoice == 1) {
-
                     } else if (userChoice == 2) {
-                        System.out.println("Funzionalità abbonamenti.");
+                        System.out.println("Funzionalità abbonamenti non ancora implementata.");
                     } else if (userChoice == 3) {
                         List<Ticket> pending = ticketDAO.findPendingTickets();
                         if (pending.isEmpty()) {

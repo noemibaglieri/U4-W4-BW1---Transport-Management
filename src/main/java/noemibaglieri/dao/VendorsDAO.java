@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+
 public class VendorsDAO {
     private final EntityManager entityManager;
 
@@ -26,16 +27,14 @@ public class VendorsDAO {
         transaction.begin();
         entityManager.persist(newVendor);
         transaction.commit();
-        System.out.println("The vendor * " + newVendor.getVendorName() + " * was successfully registered.");
+        System.out.println("Il venditore * " + newVendor.getVendorName() + " * è stato registrato con successo.");
     }
 
     public Vendor findById(Long vendorId) {
         Vendor found = entityManager.find(Vendor.class, vendorId);
         if (found == null) throw new UserNotFoundException(vendorId);
         return found;
-
     }
-     //metodo per vedere se un venditore è attivo
 
     private boolean isVendorAvailable(Vendor vendor) {
         if (vendor instanceof MachineVendor machine) {
@@ -47,81 +46,74 @@ public class VendorsDAO {
         return false;
     }
 
-//metodo per emettere un ticket
+    public void issueTicket(Vendor vendor, double price) {
+        if (!isVendorAvailable(vendor)) {
+            throw new VendorUnavailableException(vendor.getVendorName());
+        }
 
-public void issueTicket(Vendor vendor, double price) {
-    if (!isVendorAvailable(vendor)) {
-        throw new VendorUnavailableException(vendor.getVendorName());
-    }
-    
-    EntityTransaction transaction = entityManager.getTransaction();
-    transaction.begin();
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
 
-    Ticket ticket = new Ticket(LocalDate.now(), price, vendor);
-    entityManager.persist(ticket);
+        Ticket ticket = new Ticket(LocalDate.now(), price, vendor);
+        entityManager.persist(ticket);
 
-    transaction.commit();
-    System.out.println("Ticket issued by vendor '" + vendor.getVendorName()
-            + "' with ID: " + ticket.getTicketId() + " and price: €" + price);
-}
-
-//metodo per emettere un pass
-public void issuePass(Vendor vendor, Card card, PassType type) {
-
-    if (!isVendorAvailable(vendor)) {
-        throw new VendorUnavailableException(vendor.getVendorName());
+        transaction.commit();
+        System.out.println("Biglietto emesso dal venditore '" + vendor.getVendorName()
+                + "' con ID: " + ticket.getTicketId() + " e prezzo: €" + price);
     }
 
+    public void issuePass(Vendor vendor, Card card, PassType type) {
+        if (!isVendorAvailable(vendor)) {
+            throw new VendorUnavailableException(vendor.getVendorName());
+        }
 
-    boolean cardValid = card.getExpiryDate().isAfter(LocalDate.now()) && card.isActive();
-    if (!cardValid) {
-       throw new InvalidCardException(card.getId());
+        boolean cardValid = card.getExpiryDate().isAfter(LocalDate.now()) && card.isActive();
+        if (!cardValid) {
+            throw new InvalidCardException(card.getId());
+        }
+
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+
+        LocalDate startDate = LocalDate.now();
+        Pass pass = new Pass(card, startDate, type);
+        pass.setVendor(vendor);
+        entityManager.persist(pass);
+
+        transaction.commit();
+        System.out.println("Abbonamento di tipo " + type + " emesso dal venditore '" + vendor.getVendorName()
+                + "' per la tessera ID: " + card.getId() + " (ID Abbonamento: " + pass.getPassId() + ")");
     }
 
-    EntityTransaction transaction = entityManager.getTransaction();
-    transaction.begin();
+    public List<Ticket> findTicketsIssuedByVendorBetween(String vendorName, LocalDate fromDate, LocalDate toDate) {
+        if (vendorName == null) {
+            throw new VendorNotFoundException(null);
+        }
 
-    LocalDate startDate = LocalDate.now();
-    Pass pass = new Pass(card, startDate, type);
-    pass.setVendor(vendor);
-    entityManager.persist(pass);
+        TypedQuery<Vendor> vendorQuery = entityManager.createQuery(
+                "SELECT v FROM Vendor v WHERE v.name = :name", Vendor.class);
+        vendorQuery.setParameter("name", vendorName);
 
-    transaction.commit();
-    System.out.println( type + " pass issued by vendor '" + vendor.getVendorName()
-            + "' for card ID: " + card.getId() + " (Pass ID: " + pass.getPassId() + ")");
-}
+        List<Vendor> vendors = vendorQuery.getResultList();
+        if (vendors.isEmpty()) {
+            throw new VendorNotFoundException(null);
+        }
 
-//query per cercare un numero di ticket emessi da un vendor in un lasso di tempo
-public List<Ticket> findTicketsIssuedByVendorBetween(String vendorName, LocalDate fromDate, LocalDate toDate) {
-    if (vendorName == null) {
-        throw new VendorNotFoundException(null); // oppure passare un ID se lo conosci
+        Vendor vendor = vendors.get(0);
+
+        TypedQuery<Ticket> query = entityManager.createQuery(
+                "SELECT t FROM Ticket t WHERE t.vendor = :vendor AND t.dateOfPurchase BETWEEN :from AND :to", Ticket.class);
+        query.setParameter("vendor", vendor);
+        query.setParameter("from", fromDate);
+        query.setParameter("to", toDate);
+
+        List<Ticket> result = query.getResultList();
+
+        System.out.println("Trovati " + result.size() + " biglietti emessi dal venditore '" + vendor.getVendorName() +
+                "' tra il " + fromDate + " e il " + toDate);
+
+        return result;
     }
-
-    // Recupera il Vendor dal nome
-    TypedQuery<Vendor> vendorQuery = entityManager.createQuery(
-            "SELECT v FROM Vendor v WHERE v.name = :name", Vendor.class);
-    vendorQuery.setParameter("name", vendorName);
-
-    List<Vendor> vendors = vendorQuery.getResultList();
-    if (vendors.isEmpty()) {
-        throw new VendorNotFoundException(null); // oppure passa vendorName
-    }
-
-    Vendor vendor = vendors.get(0); // prende il primo vendor trovato con quel nome
-
-    TypedQuery<Ticket> query = entityManager.createQuery(
-            "SELECT t FROM Ticket t WHERE t.vendor = :vendor AND t.dateOfPurchase BETWEEN :from AND :to", Ticket.class);
-    query.setParameter("vendor", vendor);
-    query.setParameter("from", fromDate);
-    query.setParameter("to", toDate);
-
-    List<Ticket> result = query.getResultList();
-
-    System.out.println("Found " + result.size() + " tickets issued by vendor '" + vendor.getVendorName() +
-            "' between " + fromDate + " and " + toDate);
-
-    return result;
-}
 
     public List<Vendor> findAll() {
         TypedQuery<Vendor> q = entityManager.createQuery(
@@ -129,33 +121,27 @@ public List<Ticket> findTicketsIssuedByVendorBetween(String vendorName, LocalDat
         );
         return q.getResultList();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
