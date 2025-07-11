@@ -47,6 +47,7 @@ public class Application {
                             System.out.println("Digita 1 per Vedere Biglietti o Abbonamenti venduti per ogni punto vendita");
                             System.out.println("Digita 2 per vedere il Parco Mezzi");
                             System.out.println("Digita 3 per vedere i biglietti vidimati");
+                            System.out.println("Digita 4 per vedere i ritardi");
                             System.out.println("Digita 5 per tornare indietro");
                             System.out.println("Digita 0 per uscire");
                             adminChoice = scanner.nextInt();
@@ -133,6 +134,34 @@ public class Application {
                             } else if (adminChoice == 3) {
                                 System.out.println("Ecco i biglietti vidimati: " + ticketDAO.countValidatedTickets());
                                 System.out.println("Ecco i biglietti non ancora vidimati: " + ticketDAO.countNonValidatedTickets());
+                            }else if (adminChoice == 4){
+                                VehicleTripDao tripDao = new VehicleTripDao(em);
+                                List<VehicleTrip> allTrips = em.createQuery("SELECT vt FROM VehicleTrip vt", VehicleTrip.class).getResultList();
+
+                                if (allTrips.isEmpty()) {
+                                    System.out.println("Non ci sono viaggi registrati.");
+                                } else {
+                                    System.out.println("Ecco tutti i viaggi disponibili:");
+                                    for (VehicleTrip trip : allTrips) {
+                                        System.out.printf("ID %d | Mezzo: %s | Tratta: %s → %s | Durata effettiva: %d min%n",
+                                                trip.getTripId(),
+                                                trip.getVehicle().getName(),
+                                                trip.getRoute().getStartArea(),
+                                                trip.getRoute().getEndArea(),
+                                                trip.getActualDuration());
+                                    }
+
+                                    System.out.println("Inserisci l'ID del viaggio per vedere la differenza rispetto alla durata prevista:");
+                                    long tripId = scanner.nextLong();
+
+                                    try {
+                                        String info = tripDao.getTimeDifferenceInfo(tripId);
+                                        System.out.println(info);
+                                    } catch (Exception e) {
+                                        System.out.println("Errore: " + e.getMessage());
+                                    }
+                                }
+
                             }
                         }
                     } else {

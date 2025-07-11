@@ -58,9 +58,9 @@ public class VehicleTripDao {
     public String getTimeDifferenceInfo(long tripId) {
         Duration diff = calculateTimeDifference(tripId);
         long minutes = diff.toMinutes();
-        if (minutes > 0) { return "The trip was" + minutes + "minutes longer than expected";
-        } else if (minutes < 0 ) { return "The trip was" + minutes + "minutes shorter than expected";
-        } else { return "The trip duration matched the expected duration";}
+        if (minutes > 0) { return "Il viaggio è stato" + minutes + " minuti in ritardo";
+        } else if (minutes < 0 ) { return "Il viaggio è stato " + (minutes * -1) + " minuti in anticipo";
+        } else { return "In orario";}
     }
 
 }
