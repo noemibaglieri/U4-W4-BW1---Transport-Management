@@ -131,4 +131,14 @@ public class ServiceDAO {
         query.setParameter("date", date);
         return query.getResultList();
     }
+
+    // in ServiceDAO.java
+    public List<Service> findAll() {
+        TypedQuery<Service> q = em.createQuery(
+                "SELECT s FROM Service s ORDER BY s.startDate DESC",
+                Service.class
+        );
+        return q.getResultList();
+    }
+
 }
