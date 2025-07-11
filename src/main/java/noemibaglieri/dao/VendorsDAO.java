@@ -92,10 +92,23 @@ public void issuePass(Vendor vendor, Card card, PassType type) {
 }
 
 //query per cercare un numero di ticket emessi da un vendor in un lasso di tempo
-public List<Ticket> findTicketsIssuedByVendorBetween(Vendor vendor, LocalDate fromDate, LocalDate toDate) {
-    if (vendor == null) {
+public List<Ticket> findTicketsIssuedByVendorBetween(String vendorName, LocalDate fromDate, LocalDate toDate) {
+    if (vendorName == null) {
         throw new VendorNotFoundException(null); // oppure passare un ID se lo conosci
     }
+
+    // Recupera il Vendor dal nome
+    TypedQuery<Vendor> vendorQuery = entityManager.createQuery(
+            "SELECT v FROM Vendor v WHERE v.name = :name", Vendor.class);
+    vendorQuery.setParameter("name", vendorName);
+
+    List<Vendor> vendors = vendorQuery.getResultList();
+    if (vendors.isEmpty()) {
+        throw new VendorNotFoundException(null); // oppure passa vendorName
+    }
+
+    Vendor vendor = vendors.get(0); // prende il primo vendor trovato con quel nome
+
     TypedQuery<Ticket> query = entityManager.createQuery(
             "SELECT t FROM Ticket t WHERE t.vendor = :vendor AND t.dateOfPurchase BETWEEN :from AND :to", Ticket.class);
     query.setParameter("vendor", vendor);
@@ -109,6 +122,14 @@ public List<Ticket> findTicketsIssuedByVendorBetween(Vendor vendor, LocalDate fr
 
     return result;
 }
+
+    public List<Vendor> findAll() {
+        TypedQuery<Vendor> q = entityManager.createQuery(
+                "SELECT v FROM Vendor v", Vendor.class
+        );
+        return q.getResultList();
+    }
+
 
 
 

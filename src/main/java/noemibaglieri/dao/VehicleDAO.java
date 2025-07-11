@@ -7,6 +7,8 @@ import noemibaglieri.entities.Ticket;
 import noemibaglieri.entities.Tram;
 import noemibaglieri.entities.Vehicle;
 
+import java.util.List;
+
 public class VehicleDAO {
 
     private EntityManager em;
@@ -77,6 +79,11 @@ public class VehicleDAO {
             return "Errore durante l'obliterazione del ticket.";
         }
     }
+
+    public List<Vehicle> findAll() {
+        return em.createQuery("SELECT v FROM Vehicle v", Vehicle.class).getResultList();
+    }
+
 
 }
 
